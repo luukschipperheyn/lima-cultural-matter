@@ -1,0 +1,115 @@
+body {
+  color: #000;
+  background: #ccc;
+}
+
+/*Styling*/
+
+.taakbalk {
+  position: absolute;
+  width: 100%;
+  height: 30px;
+  margin: 0;
+}
+
+#balk {
+  position: absolute;
+  width: 100%;
+  display: none;
+  height: 100%;
+  background-color: green;
+}
+
+#balktext {
+  margin: 0;
+  padding: 0;
+}
+
+.window {
+  z-index: 0;
+  position: absolute;
+  min-width: 200px;
+  min-height: 50px;
+  background: #444;
+  color: #eee;
+  cursor: pointer;
+  padding-top: 32px;
+}
+
+.selected {
+  box-shadow: 0px 0px 15px #888;
+}
+
+.box {
+  display: none;
+  background: #777;
+  color: #fff;
+  min-width: 200px;
+  min-height: 50px;
+}
+
+.open .box {
+  display: block;
+}
+
+.box iframe {
+  height: 100%;
+  width: 100%;
+}
+
+.dbl {
+  background-color: violet;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+}
+
+#youtube {
+  margin-left: 20px;
+  width: 960px;
+  margin-top: 20px;
+  height: 510px;
+}
+
+a {
+  color: #fff;
+}
+
+p {
+  color: #000;
+}
+
+/*ON DOUBLECLICK.HTML FILE*/
+
+div.product {
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+  width: auto;
+  margin: 0 47px 0 0;
+  padding: 24px 22px 20px 27px;
+  border: 1px solid transparent;
+}
+
+div.product:last-child {
+  margin: 0px;
+}
+
+div.product:hover {
+  border: 1px solid #878787;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+div.product.unselected {
+  opacity: 0.6;
+  filter: alpha(opacity=60);
+}
+
+div.product.selected {
+  border: 1px solid #32a24e;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}

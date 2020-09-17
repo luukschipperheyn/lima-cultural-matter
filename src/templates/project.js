@@ -1,21 +1,69 @@
 import { graphql } from "gatsby";
-import React from "react";
+import React, { useEffect } from "react";
+import $ from "jquery";
+import "../style/project.css";
 
-export default ({ data }) => (
-  <div>
-    <h1>{data.datoCmsProject.title}</h1>
-    <div>
-      {data.datoCmsProject.links.map((linkNode) => {
-        return <div>{JSON.stringify(linkNode)}</div>;
+require("jquery-ui");
+require("jquery-ui/ui/widgets/draggable");
+
+function handleLoad() {
+  // deze functie wordt uitgevoerd zodra de pagina is geladen
+  var highestZIndex = 0;
+
+  $(".window").draggable();
+  $(".window").on("mousedown", function() {
+    $(".window").removeClass("selected");
+    $(this).addClass("selected");
+    $(this).css("z-index", ++highestZIndex);
+  });
+  $(".window").dblclick(function() {
+    $(this).toggleClass("open");
+  });
+
+  // collect all the divs
+  var divs = document.getElementsByClassName("window");
+  // get window width and height
+  var winWidth = window.innerWidth;
+  var winHeight = window.innerHeight;
+
+  for (var i = 0; i < divs.length; i++) {
+    var thisDiv = divs[i];
+    const randomTop = getRandomNumber(0, winHeight);
+    const randomLeft = getRandomNumber(0, winWidth);
+    thisDiv.style.top = randomTop + "px";
+    thisDiv.style.left = randomLeft + "px";
+  }
+
+  function getRandomNumber(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+}
+
+export default ({ data }) => {
+  useEffect(handleLoad, []); // dit stukje roept de functie handleLoad aan zodra de pagina is geladen
+  const project = data.datoCmsProject; // prop de data uit datoCMS in de variabele project voor de handigheid. (const is een coole manier van 'var' gebruiken als je weet dat de waarde ervan constant gaat blijven)
+  return (
+    <>
+      <h1>{project.title}</h1>
+      <p>{project.description}</p>
+      {project.links.map((link, i) => {
+        return (
+          <div className="window" key={`link-${i}`}>
+            <div className="box" style={{ height: 200, width: 200 }}>
+              <iframe src={link.url}></iframe>
+            </div>
+          </div>
+        );
       })}
-    </div>
-  </div>
-);
+    </>
+  );
+};
 
 export const query = graphql`
   query ProjectQuery($slug: String!) {
     datoCmsProject(slug: { eq: $slug }) {
       title
+      description
       links {
         url
         xposition
