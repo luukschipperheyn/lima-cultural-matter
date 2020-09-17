@@ -46,8 +46,11 @@ export default ({ data }) => {
     <>
       <h1>{project.title}</h1>
       <p>{project.description}</p>
+
+      {/* hier ga je loopen over elke Link */}
       {project.links.map((link, i) => {
         return (
+          // dit stukje html wordt gegenereerd voor elke Link:
           <div className="window" key={`link-${i}`}>
             <div className="box" style={{ height: 200, width: 200 }}>
               <iframe src={link.url}></iframe>
