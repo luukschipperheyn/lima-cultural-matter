@@ -74,7 +74,9 @@ export const query = graphql`
     datoCmsProject(slug: { eq: $slug }) {
       title
       description
-      windowcolor
+      windowcolor {
+        hex
+      }
       links {
         url
         xposition
