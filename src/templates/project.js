@@ -51,8 +51,15 @@ export default ({ data }) => {
       {project.links.map((link, i) => {
         return (
           // dit stukje html wordt gegenereerd voor elke Link:
-          <div className="window" key={`link-${i}`}>
-            <div className="box" style={{ height: 200, width: 200 }}>
+          <div
+            className="window"
+            key={`link-${i}`}
+            style={{ backgroundColor: link.color }}
+          >
+            <div
+              className="box"
+              style={{ height: link.height, width: link.width }}
+            >
               <iframe src={link.url}></iframe>
             </div>
           </div>
@@ -71,6 +78,9 @@ export const query = graphql`
         url
         xposition
         yposition
+        width
+        height
+        color
       }
     }
   }
