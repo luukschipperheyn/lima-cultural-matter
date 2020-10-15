@@ -91,7 +91,7 @@ export default ({ data }) => {
             );
           })}
       </div>
-      <p>{project.description}</p>
+
       <div
         className="h1box2"
         style={{
@@ -128,7 +128,10 @@ export default ({ data }) => {
 
             <div
               className="box"
-              style={{ height: link.height, width: link.width }}
+              style={{
+                height: link.height,
+                width: link.width,
+              }}
             >
               {link.url && <iframe src={link.url} frameBorder="0"></iframe>}
               {link.image && <Img fluid={link.image.fluid} />}

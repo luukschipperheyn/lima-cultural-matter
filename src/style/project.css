@@ -1,16 +1,17 @@
 p {
-  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 @font-face {
-  font-family: Goudy;
-  src: url(AdobeHebrew-Regular.otf);
+  font-family: Arial;
 }
 
 body {
   color: #000;
   background: #ccc;
-  font-family: Goudy;
+  font-family: Arial;
+  overflow: hidden;
 }
 
 .projectcontainer {
@@ -26,7 +27,7 @@ body {
 .h1box1 {
   position: absolute;
   top: 0px;
-  left: 300px;
+  left: 25%;
   text-align: center;
   min-width: 200px;
 }
@@ -36,7 +37,7 @@ body {
   min-width: 200px;
   bottom: 0px;
   text-align: center;
-  left: 900px;
+  left: 75%;
 }
 
 .h1box3 {
@@ -68,7 +69,7 @@ a {
 }
 
 .selected {
-  box-shadow: 0px 0px 15px #888;
+  box-shadow: 0px 3px 10px grey;
 }
 
 .box {
@@ -80,6 +81,10 @@ a {
 }
 
 .open .box {
+  display: block;
+}
+
+.descr {
   display: block;
 }
 
