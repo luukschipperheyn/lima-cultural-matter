@@ -81,7 +81,7 @@ export default ({ data }) => {
             );
           })}
       </div>
-      <p>{project.description}</p>
+
       <div
         className="h1box2"
         style={{
