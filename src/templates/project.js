@@ -1,25 +1,11 @@
 import { graphql, Link } from "gatsby";
 import Img from "gatsby-image";
-import React, { useEffect } from "react";
-import $ from "jquery";
+import React, { useEffect, useState } from "react";
 import "../style/project.css";
-
-require("jquery-ui");
-require("jquery-ui/ui/widgets/draggable");
+import Draggable from "react-draggable";
 
 function handleLoad() {
   // deze functie wordt uitgevoerd zodra de pagina is geladen
-  var highestZIndex = 0;
-
-  $(".window").draggable();
-  $(".window").on("mousedown", function() {
-    $(".window").removeClass("selected");
-    $(this).addClass("selected");
-    $(this).css("z-index", ++highestZIndex);
-  });
-  $(".window").dblclick(function() {
-    $(this).toggleClass("open");
-  });
 
   // collect all the divs
   var divs = document.getElementsByClassName("window");
@@ -66,7 +52,11 @@ function handleLoad() {
 export default ({ data }) => {
   useEffect(handleLoad, []); // dit stukje roept de functie handleLoad aan zodra de pagina is geladen
   const project = data.datoCmsProject; // prop de data uit datoCMS in de variabele project voor de handigheid. (const is een coole manier van 'var' gebruiken als je weet dat de waarde ervan constant gaat blijven)
-  console.log(data.allprojects);
+  const [openWindows, setOpenWindows] = useState(
+    project.links.map((link) => link.open)
+  );
+  const [zIndexes, setZIndexes] = useState(project.links.map(() => 0));
+  const [selectedWindow, setSelectedWindow] = useState(null);
   return (
     <div
       className="projectcontainer"
@@ -83,7 +73,7 @@ export default ({ data }) => {
           })
           .map((project, i) => {
             return (
-              <div>
+              <div key={`project-${i}`}>
                 <Link to={`/projects/${project.node.slug}`}>
                   {project.node.title}
                 </Link>
@@ -113,27 +103,46 @@ export default ({ data }) => {
 
       {/* hier ga je loopen over elke Link */}
       {project.links.map((link, i) => {
-        let windowclass = "";
-        if (link.open) {
-          windowclass = "open";
-        }
         return (
           // dit stukje html wordt gegenereerd voor elke Link:
-          <div
-            className={`window ${windowclass}`}
-            key={`link-${i}`}
-            style={{ background: link.onecolor.hex }}
-          >
-            <p style={{ color: project.textcolor.hex }}>{link.itemtitle}</p>
-
+          <Draggable>
             <div
-              className="box"
-              style={{ height: link.height, width: link.width }}
+              key={`link-${i}`}
+              className={`window ${openWindows[i] ? "open" : ""} ${
+                selectedWindow === i ? "selected" : ""
+              }`}
+              style={{ background: link.onecolor.hex, zIndex: zIndexes[i] }}
+              onDoubleClick={() =>
+                setOpenWindows(
+                  openWindows.map((windowOpen, windowOpenIndex) =>
+                    windowOpenIndex === i ? !windowOpen : windowOpen
+                  )
+                )
+              }
+              onClick={() => {
+                const highestZIndex = zIndexes.reduce(
+                  (acc, val) => (val > acc ? val : acc),
+                  0
+                );
+                setZIndexes(
+                  zIndexes.map((zIndex, zIndexIndex) =>
+                    zIndexIndex === i ? highestZIndex + 1 : zIndex
+                  )
+                );
+                setSelectedWindow(i);
+              }}
             >
-              {link.url && <iframe src={link.url} frameBorder="0"></iframe>}
-              {link.image && <Img fluid={link.image.fluid} />}
+              <p style={{ color: project.textcolor.hex }}>{link.itemtitle}</p>
+
+              <div
+                className="box"
+                style={{ height: link.height, width: link.width }}
+              >
+                {link.url && <iframe src={link.url} frameBorder="0"></iframe>}
+                {link.image && <Img fluid={link.image.fluid} />}
+              </div>
             </div>
-          </div>
+          </Draggable>
         );
       })}
     </div>
