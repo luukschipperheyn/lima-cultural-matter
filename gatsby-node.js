@@ -16,14 +16,14 @@ exports.createPages = ({ graphql, actions }) => {
         }
       }
     `)
-      .then(result => {
+      .then((result) => {
         result.data.allDatoCmsProject.edges.map(({ node: project }) => {
           createPage({
             path: `projects/${project.slug}`,
             component: path.resolve(`./src/templates/project.js`),
             context: {
-              slug: project.slug
-            }
+              slug: project.slug,
+            },
           });
         });
       })

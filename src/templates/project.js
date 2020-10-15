@@ -44,8 +44,13 @@ export default ({ data }) => {
   const project = data.datoCmsProject; // prop de data uit datoCMS in de variabele project voor de handigheid. (const is een coole manier van 'var' gebruiken als je weet dat de waarde ervan constant gaat blijven)
   return (
     <>
-      <h1>{project.title}</h1>
+      <div className="h1box1">
+        <h1>{project.title}</h1>
+      </div>
       <p>{project.description}</p>
+      <div className="h1box2">
+        <h1>Cultural Matter</h1>
+      </div>
 
       {/* hier ga je loopen over elke Link */}
       {project.links.map((link, i) => {

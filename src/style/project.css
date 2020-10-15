@@ -1,9 +1,32 @@
 body {
   color: #000;
   background: #ccc;
+  font-family: Arial;
 }
 
 /*Styling*/
+
+.h1box1 {
+  position: absolute;
+  top: 0px;
+  left: 300px;
+  background-color: #444;
+  /* width: max-content; */
+}
+
+.h1box2 {
+  position: absolute;
+  bottom: 0px;
+  left: 600px;
+  background-color: #444;
+  /* width: max-content; */
+}
+
+h1 {
+  font-weight: 300;
+  color: #ccc;
+  padding: 5px;
+}
 
 .taakbalk {
   position: absolute;
@@ -29,7 +52,7 @@ body {
   z-index: 0;
   position: absolute;
   min-width: 200px;
-  min-height: 50px;
+  min-height: 0px;
   background: #444;
   color: #eee;
   cursor: pointer;
