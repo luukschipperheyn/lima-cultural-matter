@@ -1,7 +1,24 @@
+p {
+  margin: 0;
+}
+
+@font-face {
+  font-family: Goudy;
+  src: url(AdobeHebrew-Regular.otf);
+}
+
 body {
   color: #000;
   background: #ccc;
-  font-family: Arial;
+  font-family: Goudy;
+}
+
+.projectcontainer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 /*Styling*/
@@ -10,42 +27,29 @@ body {
   position: absolute;
   top: 0px;
   left: 300px;
-  background-color: #444;
-  /* width: max-content; */
+  text-align: center;
+  min-width: 200px;
 }
 
 .h1box2 {
   position: absolute;
+  min-width: 200px;
   bottom: 0px;
-  left: 600px;
-  background-color: #444;
-  /* width: max-content; */
+  text-align: center;
+  left: 900px;
 }
 
-h1 {
-  font-weight: 300;
-  color: #ccc;
-  padding: 5px;
-}
-
-.taakbalk {
+.h1box3 {
   position: absolute;
-  width: 100%;
-  height: 30px;
-  margin: 0;
+  top: 500px;
+  left: -80px;
+  min-width: 200px;
+  text-align: center;
+  transform: rotate(-90deg);
 }
 
-#balk {
-  position: absolute;
-  width: 100%;
-  display: none;
-  height: 100%;
-  background-color: green;
-}
-
-#balktext {
-  margin: 0;
-  padding: 0;
+a {
+  text-decoration: none;
 }
 
 .window {
@@ -56,7 +60,11 @@ h1 {
   background: #444;
   color: #eee;
   cursor: pointer;
-  padding-top: 32px;
+
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .selected {
@@ -101,7 +109,8 @@ a {
 }
 
 p {
-  color: #000;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 /*ON DOUBLECLICK.HTML FILE*/

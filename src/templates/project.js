@@ -1,4 +1,5 @@
-import { graphql } from "gatsby";
+import { graphql, Link } from "gatsby";
+import Img from "gatsby-image";
 import React, { useEffect } from "react";
 import $ from "jquery";
 import "../style/project.css";
@@ -39,55 +40,145 @@ function handleLoad() {
   }
 }
 
+/*
+{
+  "data": {
+    "allprojects": {
+      "edges": [
+        {
+          "node": {
+            "slug": "rafaelrozendaal",
+            "title": "Rafaël Rozendaal"
+          }
+        },
+        {
+          "node": {
+            "slug": "luuk",
+            "title": "Amalia Ulman"
+          }
+        }
+      ]
+    }
+  },
+  "extensions": {}
+}
+*/
 export default ({ data }) => {
   useEffect(handleLoad, []); // dit stukje roept de functie handleLoad aan zodra de pagina is geladen
   const project = data.datoCmsProject; // prop de data uit datoCMS in de variabele project voor de handigheid. (const is een coole manier van 'var' gebruiken als je weet dat de waarde ervan constant gaat blijven)
+  console.log(data.allprojects);
   return (
-    <>
-      <div className="h1box1">
-        <h1>{project.title}</h1>
+    <div
+      className="projectcontainer"
+      style={{
+        background: project.backgroundcolor.hex,
+        color: project.textcolor.hex,
+      }}
+    >
+      <div className="h1box1" style={{ background: project.menucolor.hex }}>
+        <p>{project.title}</p>{" "}
+        {data.allprojects.edges
+          .filter((currentproject) => {
+            return currentproject.node.slug !== project.slug;
+          })
+          .map((project, i) => {
+            return (
+              <div>
+                <Link to={`/projects/${project.node.slug}`}>
+                  {project.node.title}
+                </Link>
+              </div>
+            );
+          })}
       </div>
       <p>{project.description}</p>
-      <div className="h1box2">
-        <h1>Cultural Matter</h1>
+      <div
+        className="h1box2"
+        style={{
+          background: project.menucolor.hex,
+          color: project.textcolor.hex,
+        }}
+      >
+        <p>Cultural Matter</p>
+      </div>
+      <div
+        className="h1box3"
+        style={{
+          background: project.menucolor.hex,
+          color: project.textcolor.hex,
+        }}
+      >
+        <p> Lima</p>
       </div>
 
       {/* hier ga je loopen over elke Link */}
       {project.links.map((link, i) => {
+        let windowclass = "";
+        if (link.open) {
+          windowclass = "open";
+        }
         return (
           // dit stukje html wordt gegenereerd voor elke Link:
           <div
-            className="window"
+            className={`window ${windowclass}`}
             key={`link-${i}`}
-            style={{ backgroundColor: link.color }}
+            style={{ background: link.onecolor.hex }}
           >
+            <p style={{ color: project.textcolor.hex }}>{link.itemtitle}</p>
+
             <div
               className="box"
               style={{ height: link.height, width: link.width }}
             >
-              <iframe src={link.url}></iframe>
+              {link.url && <iframe src={link.url} frameBorder="0"></iframe>}
+              {link.image && <Img fluid={link.image.fluid} />}
             </div>
           </div>
         );
       })}
-    </>
+    </div>
   );
 };
 
 export const query = graphql`
   query ProjectQuery($slug: String!) {
-    datoCmsProject(slug: { eq: $slug }) {
+    allprojects: allDatoCmsProject {
+      edges {
+        node {
+          slug
+          title
+        }
+      }
+    }
+    datoCmsProject: datoCmsProject(slug: { eq: $slug }) {
       title
+      slug
       description
-      windowcolor {
+      backgroundcolor {
+        hex
+      }
+      textcolor {
+        hex
+      }
+      menucolor {
         hex
       }
       links {
+        itemtitle
         url
         xposition
         yposition
         width
         height
+        open
+        onecolor {
+          hex
+        }
+        image {
+          fluid(maxWidth: 600, imgixParams: { fm: "jpg", auto: "compress" }) {
+            ...GatsbyDatoCmsFluid
+          }
+        }
       }
     }
   }
