@@ -4,13 +4,14 @@ p {
 }
 
 @font-face {
-  font-family: Arial;
+  font-family: Roboto-Regular;
+  src: url("Roboto-Regular.ttf") format("truetype");
 }
 
 body {
   color: #000;
   background: #ccc;
-  font-family: Arial;
+  font-family: Roboto-Regular;
   overflow: hidden;
 }
 
@@ -46,7 +47,7 @@ body {
   left: -80px;
   min-width: 200px;
   text-align: center;
-  transform: rotate(-90deg);
+  text-transform: rotate(-90deg);
 }
 
 a {
