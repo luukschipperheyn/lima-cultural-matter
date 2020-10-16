@@ -5,7 +5,7 @@ p {
 
 @font-face {
   font-family: Roboto-Regular;
-  src: url("Roboto-Regular.ttf") format("truetype");
+  src: url("roboto-regular-webfont.woff") format("woff");
 }
 
 body {
