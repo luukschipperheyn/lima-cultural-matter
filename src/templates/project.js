@@ -6,11 +6,7 @@ import Draggable from "react-draggable";
 import limaLogo from "../assets/LIMA_logo_staand_wit.png";
 
 function handleLoad() {
-  // deze functie wordt uitgevoerd zodra de pagina is geladen
-
-  // collect all the divs
   var divs = document.getElementsByClassName("window");
-  // get window width and height
   var winWidth = window.innerWidth;
   var winHeight = window.innerHeight;
 
@@ -51,8 +47,8 @@ function handleLoad() {
 }
 */
 export default ({ data }) => {
-  useEffect(handleLoad, []); // dit stukje roept de functie handleLoad aan zodra de pagina is geladen
-  const project = data.datoCmsProject; // prop de data uit datoCMS in de variabele project voor de handigheid. (const is een coole manier van 'var' gebruiken als je weet dat de waarde ervan constant gaat blijven)
+  useEffect(handleLoad, []);
+  const project = data.datoCmsProject;
   const [openWindows, setOpenWindows] = useState(
     project.links.map((link) => link.open)
   );
@@ -109,10 +105,9 @@ export default ({ data }) => {
         </a>
       </div>
 
-      {/* hier ga je loopen over elke Link */}
+      {/* links loopen */}
       {project.links.map((link, i) => {
         return (
-          // dit stukje html wordt gegenereerd voor elke Link:
           <Draggable>
             <div
               key={`link-${i}`}
