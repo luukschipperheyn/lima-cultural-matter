@@ -7,6 +7,9 @@ import limaLogo from "../assets/LIMA_logo_staand_wit.png";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 
 export default ({ data }) => {
+  if (typeof window === "undefined") {
+    return <></>;
+  }
   const project = data.datoCmsProject;
   const [openWindows, setOpenWindows] = useState(
     project.links.map((link) => link.open)
@@ -15,14 +18,10 @@ export default ({ data }) => {
     project.links.map((link) => (link.open ? 0 : 1))
   );
   const [defaultPositions] = useState(
-    project.links.map(() =>
-      typeof window !== "undefined"
-        ? {
-            x: Math.max(0, Math.random() * (window.innerWidth - 200)),
-            y: Math.random() * (window.innerHeight - 18),
-          }
-        : undefined
-    )
+    project.links.map(() => ({
+      x: Math.max(0, Math.random() * (window.innerWidth - 200)),
+      y: Math.random() * (window.innerHeight - 18),
+    }))
   );
   const [selectedWindow, setSelectedWindow] = useState(null);
   const [dragging, setDragging] = useState(false);
@@ -98,7 +97,7 @@ export default ({ data }) => {
           color: project.textcolor.hex,
         }}
       >
-        <span class="helper"></span>{" "}
+        <span className="helper"></span>{" "}
         <a href="https://www.li-ma.nl/lima/" target="_blank">
           {" "}
           <img className="limalink" src={limaLogo}></img>
