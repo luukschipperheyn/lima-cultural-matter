@@ -3,6 +3,7 @@ import Img from "gatsby-image";
 import React, { useEffect, useState } from "react";
 import "../style/project.css";
 import Draggable from "react-draggable";
+import limaLogo from "../assets/LIMA_logo_staand_wit.png";
 
 function handleLoad() {
   // deze functie wordt uitgevoerd zodra de pagina is geladen
@@ -104,10 +105,7 @@ export default ({ data }) => {
         <span class="helper"></span>{" "}
         <a href="https://www.li-ma.nl/lima/" target="_blank">
           {" "}
-          <img
-            className="limalink"
-            src="http://florianvanzandwijk.nl/media/LIMA_logo_staand_wit.png"
-          ></img>
+          <img className="limalink" src={limaLogo}></img>
         </a>
       </div>
 
