@@ -15,16 +15,14 @@ export default ({ data }) => {
     project.links.map((link) => (link.open ? 0 : 1))
   );
   const [defaultPositions] = useState(
-    project.links.map(() => ({
-      x:
-        typeof window !== "undefined"
-          ? Math.max(0, Math.random() * (window.innerWidth - 200))
-          : 0,
-      y:
-        typeof window !== "undefined"
-          ? Math.random() * (window.innerHeight - 18)
-          : 0,
-    }))
+    project.links.map(() =>
+      typeof window !== "undefined"
+        ? {
+            x: Math.max(0, Math.random() * (window.innerWidth - 200)),
+            y: Math.random() * (window.innerHeight - 18),
+          }
+        : undefined
+    )
   );
   const [selectedWindow, setSelectedWindow] = useState(null);
   const [dragging, setDragging] = useState(false);
