@@ -28,6 +28,7 @@ body {
   left: 25%;
   text-align: center;
   min-width: 200px;
+  z-index: 200000;
 }
 
 .h1box2 {
@@ -36,6 +37,7 @@ body {
   left: 75%;
   min-width: 200px;
   text-align: center;
+  z-index: 200000;
 }
 
 .h1box3 {
@@ -45,7 +47,7 @@ body {
   text-align: center;
   width: 42px;
   height: 200px;
-
+  z-index: 200000;
   text-align: center;
 }
 
