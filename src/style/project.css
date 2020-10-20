@@ -2,17 +2,14 @@ p {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-
-@font-face {
-  font-family: Roboto-Regular;
-  src: url("roboto-regular-webfont.woff") format("woff");
-}
-
 body {
   color: #000;
   background: #ccc;
-  font-family: Roboto-Regular;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 0.4px;
   overflow: hidden;
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 .projectcontainer {
@@ -35,19 +32,33 @@ body {
 
 .h1box2 {
   position: absolute;
-  min-width: 200px;
   bottom: 0px;
-  text-align: center;
   left: 75%;
+  min-width: 200px;
+  text-align: center;
 }
 
 .h1box3 {
   position: absolute;
-  top: 500px;
-  left: -80px;
-  min-width: 200px;
+  top: 45%;
+  left: 0;
   text-align: center;
-  text-transform: rotate(-90deg);
+  width: 42px;
+  height: 200px;
+
+  text-align: center;
+}
+
+.helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.limalink {
+  width: 40%;
+  vertical-align: middle;
+  margin-left: -6px;
 }
 
 a {
@@ -103,11 +114,15 @@ iframe {
   height: 100%;
 }
 
-#youtube {
+/* #youtube {
   margin-left: 20px;
   width: 960px;
   margin-top: 20px;
   height: 510px;
+} */
+
+.header {
+  visibility: hidden;
 }
 
 a {

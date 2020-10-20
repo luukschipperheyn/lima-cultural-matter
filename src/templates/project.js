@@ -66,20 +66,23 @@ export default ({ data }) => {
       }}
     >
       <div className="h1box1" style={{ background: project.menucolor.hex }}>
-        <p>{project.title}</p>{" "}
-        {data.allprojects.edges
-          .filter((currentproject) => {
-            return currentproject.node.slug !== project.slug;
-          })
-          .map((project, i) => {
-            return (
-              <div key={`project-${i}`}>
-                <Link to={`/projects/${project.node.slug}`}>
-                  {project.node.title}
-                </Link>
-              </div>
-            );
-          })}
+        <p>{project.title}</p>
+        {/* 
+        {" "}
+        {data.allprojects.edges.filter((currentproject) => {
+          return currentproject.node.slug !== project.slug;
+        })
+        .map((project, i) => {
+          return (
+            <div key={`project-${i}`}>
+              <Link to={`/projects/${project.node.slug}`}>
+                {project.node.title}
+              </Link>
+            </div>
+        );
+        }
+        )}
+         */}
       </div>
 
       <div
@@ -98,7 +101,14 @@ export default ({ data }) => {
           color: project.textcolor.hex,
         }}
       >
-        <p> Lima</p>
+        <span class="helper"></span>{" "}
+        <a href="https://www.li-ma.nl/lima/" target="_blank">
+          {" "}
+          <img
+            className="limalink"
+            src="http://florianvanzandwijk.nl/media/LIMA_logo_staand_wit.png"
+          ></img>
+        </a>
       </div>
 
       {/* hier ga je loopen over elke Link */}
