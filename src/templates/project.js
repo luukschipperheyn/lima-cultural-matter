@@ -127,7 +127,7 @@ export default ({ data }) => {
                   )
                 )
               }
-              onClick={() => {
+              onMouseDownCapture={() => {
                 const highestZIndex = zIndexes.reduce(
                   (acc, val) => (val > acc ? val : acc),
                   0
