@@ -11,7 +11,7 @@
     "gatsby-plugin-sass": "^2.1.24",
     "gatsby-source-datocms": "^2.1.20",
     "gatsby-source-filesystem": "^2.1.40",
-    "gatsby-transformer-remark": "^2.6.39",
+    "gatsby-transformer-remark": "^2.8.44",
     "http-server": "^0.12.3",
     "jquery": "^3.5.1",
     "jquery-ui": "^1.12.1",
@@ -20,6 +20,7 @@
     "react-dom": "^16.10.2",
     "react-draggable": "^4.4.3",
     "react-helmet": "^5.2.0",
+    "react-icons": "^3.11.0",
     "react-masonry-component": "^6.2.1",
     "react-slick": "^0.25.2",
     "slick-carousel": "^1.8.1"

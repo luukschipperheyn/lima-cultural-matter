@@ -74,12 +74,14 @@ a {
   min-height: 0px;
   background: #444;
   color: #eee;
-  cursor: pointer;
-
   margin-block-start: 0px;
   margin-block-end: 0px;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
+}
+
+.window-title {
+  cursor: pointer;
 }
 
 .selected {
@@ -131,7 +133,11 @@ a {
   color: #fff;
 }
 
-p {
+p,
+h1,
+h2,
+h3,
+h4 {
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -167,4 +173,40 @@ div.product.selected {
   border: 1px solid #32a24e;
   -moz-border-radius: 3px;
   border-radius: 3px;
+}
+
+.bottom-menu {
+  width: 200px;
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.bottom-menu--icon {
+  position: absolute;
+  right: 16px;
+  top: 10px;
+}
+
+.bottom-menu--title {
+  cursor: pointer;
+  text-align: left;
+}
+
+.bottom-menu--body {
+  font-size: 12px;
+  text-align: left;
+  line-height: 1.2;
+}
+
+.box-text p {
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.box-text a {
+  text-decoration: underline;
+}
+
+.box-text img {
+  max-width: 100%;
 }
