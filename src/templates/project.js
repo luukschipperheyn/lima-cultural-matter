@@ -16,8 +16,14 @@ export default ({ data }) => {
   );
   const [defaultPositions] = useState(
     project.links.map(() => ({
-      x: window ? Math.max(0, Math.random() * (window.innerWidth - 200)) : 0,
-      y: window ? Math.random() * (window.innerHeight - 18) : 0,
+      x:
+        typeof window !== "undefined"
+          ? Math.max(0, Math.random() * (window.innerWidth - 200))
+          : 0,
+      y:
+        typeof window !== "undefined"
+          ? Math.random() * (window.innerHeight - 18)
+          : 0,
     }))
   );
   const [selectedWindow, setSelectedWindow] = useState(null);
