@@ -3,7 +3,12 @@ const { createFilePath } = require(`gatsby-source-filesystem`);
 const webpack = require(`webpack`);
 
 exports.createPages = ({ graphql, actions }) => {
-  const { createPage } = actions;
+  const { createPage, createRedirect } = actions;
+  createRedirect({
+    fromPath: "/",
+    toPath: "/projects/amaliaulman",
+    isPermanent: false,
+  });
 
   return new Promise((resolve, reject) => {
     graphql(`
