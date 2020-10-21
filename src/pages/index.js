@@ -3,13 +3,14 @@ import React from "react";
 
 const IndexPage = ({ data }) => (
   <div>
-    <ul>
+    {/* <ul>
       {data.allDatoCmsProject.edges.map(({ node: project }, index) => (
         <li>
           <Link to={`/projects/${project.slug}`}>{project.title}</Link>
         </li>
       ))}
-    </ul>
+    </ul> */}
+    Redirecting...
   </div>
 );
 
