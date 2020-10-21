@@ -132,6 +132,7 @@ export default ({ data }) => {
             onStop={(e) => {
               setDragging(false);
             }}
+            handle=".window-title"
             defaultPosition={defaultPositions[i]}
             bounds={{ top: 0 }}
           >
