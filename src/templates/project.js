@@ -185,7 +185,18 @@ export default ({ data }) => {
                     frameBorder="0"
                   ></iframe>
                 )}
-                {link.image && <Img fluid={link.image.fluid} />}
+                {link.image && link.image.fluid && (
+                  <Img fluid={link.image.fluid} />
+                )}
+                {link.image && link.image.video && (
+                  <video
+                    autoPlay={link.autoplay}
+                    loop={link.autoplay}
+                    muted={link.autoplay}
+                    controls={!link.autoplay}
+                    src={link.image.video.mp4Url}
+                  />
+                )}
                 {selectedWindow !== i && (
                   <div
                     className="window--overlay"
@@ -234,6 +245,7 @@ export const query = graphql`
         width
         height
         open
+        autoplay
         zIndex
         textNode {
           childMarkdownRemark {
@@ -246,6 +258,9 @@ export const query = graphql`
         image {
           fluid(maxWidth: 600, imgixParams: { fm: "jpg", auto: "compress" }) {
             ...GatsbyDatoCmsFluid
+          }
+          video {
+            mp4Url(res: medium)
           }
         }
       }
