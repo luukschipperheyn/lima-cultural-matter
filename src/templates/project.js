@@ -183,6 +183,7 @@ export default ({ data }) => {
                     style={dragging ? { pointerEvents: "none" } : {}}
                     src={link.url}
                     frameBorder="0"
+                    scrolling="no"
                   ></iframe>
                 )}
                 {link.image && link.image.fluid && (
