@@ -8,6 +8,7 @@ exports.createPages = ({ graphql, actions }) => {
     fromPath: "/",
     toPath: "/projects/amaliaulman",
     isPermanent: false,
+    redirectInBrowser: true,
   });
 
   return new Promise((resolve, reject) => {
