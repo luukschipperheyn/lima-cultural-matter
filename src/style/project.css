@@ -11,13 +11,11 @@ p {
 }
 
 body {
-  color: #000;
   background: #ccc;
   font-family: "roboto-regular";
   font-size: 17px;
   letter-spacing: 0.4;
   overflow: hidden;
-  hyphens: auto;
 }
 
 .projectcontainer {
@@ -35,7 +33,8 @@ body {
   top: 0px;
   left: 25%;
   text-align: center;
-  min-width: 200px;
+  font-weight: bold;
+  min-width: 230px;
   z-index: 200000;
 }
 
@@ -44,7 +43,7 @@ body {
   font-weight: bold;
   bottom: 0px;
   left: 75%;
-  min-width: 200px;
+  min-width: 230px;
   text-align: center;
   z-index: 200000;
 }
@@ -82,7 +81,6 @@ a {
   min-width: 200px;
   min-height: 0px;
   background: #444;
-  color: #eee;
   margin-block-start: 0px;
   margin-block-end: 0px;
   margin-inline-start: 0px;
@@ -192,18 +190,19 @@ div.product.selected {
 }
 
 .bottom-menu--body {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: normal;
   text-align: left;
-  line-height: 1.2;
+  line-height: 1.3;
+  margin-bottom: 10px;
 }
 
 .box-text p {
   font-family: "roboto-regular";
-  font-size: 17px;
+  font-size: 14px;
   letter-spacing: 0.4;
-  line-height: inherit;
-  margin-bottom: 20px;
+  line-height: 1.3;
+  margin-bottom: 10px;
 }
 
 .box-text a {
