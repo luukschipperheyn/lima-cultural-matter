@@ -15,17 +15,37 @@ export default ({ data }) => {
     project.links.map((link) => link.open)
   );
   const [zIndexes, setZIndexes] = useState(
-    project.links.map((link) => (link.open ? 0 : 1))
+    project.links.map((link) =>
+      link.zIndex !== null ? link.zIndex : link.open ? 0 : 1
+    )
   );
   const [defaultPositions] = useState(
-    project.links.map(() => ({
-      x: Math.max(0, Math.random() * (window.innerWidth - 200)),
-      y: Math.random() * (window.innerHeight - 18),
+    project.links.map((link) => ({
+      x:
+        link.xposition !== null
+          ? link.xposition
+          : Math.max(0, Math.random() * (window.innerWidth - link.width)),
+      y:
+        link.yposition !== null
+          ? link.yposition
+          : Math.max(0, Math.random() * (window.innerHeight - 600)),
     }))
   );
   const [selectedWindow, setSelectedWindow] = useState(null);
   const [dragging, setDragging] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
+  const selectWindow = (i) => {
+    const highestZIndex = zIndexes.reduce(
+      (acc, val) => (val > acc ? val : acc),
+      0
+    );
+    setZIndexes(
+      zIndexes.map((zIndex, zIndexIndex) =>
+        zIndexIndex === i ? highestZIndex + 1 : zIndex
+      )
+    );
+    setSelectedWindow(i);
+  };
   return (
     <div
       className="projectcontainer"
@@ -127,6 +147,9 @@ export default ({ data }) => {
             >
               <p
                 className="window-title"
+                onMouseDownCapture={() => {
+                  selectWindow(i);
+                }}
                 onDoubleClick={() =>
                   setOpenWindows(
                     openWindows.map((windowOpen, windowOpenIndex) =>
@@ -134,18 +157,6 @@ export default ({ data }) => {
                     )
                   )
                 }
-                onMouseDownCapture={() => {
-                  const highestZIndex = zIndexes.reduce(
-                    (acc, val) => (val > acc ? val : acc),
-                    0
-                  );
-                  setZIndexes(
-                    zIndexes.map((zIndex, zIndexIndex) =>
-                      zIndexIndex === i ? highestZIndex + 1 : zIndex
-                    )
-                  );
-                  setSelectedWindow(i);
-                }}
                 style={{ color: project.textcolor.hex }}
               >
                 {link.itemtitle}
@@ -174,6 +185,14 @@ export default ({ data }) => {
                   ></iframe>
                 )}
                 {link.image && <Img fluid={link.image.fluid} />}
+                {selectedWindow !== i && (
+                  <div
+                    className="window--overlay"
+                    onMouseDownCapture={() => {
+                      selectWindow(i);
+                    }}
+                  ></div>
+                )}
               </div>
             </div>
           </Draggable>
@@ -214,6 +233,7 @@ export const query = graphql`
         width
         height
         open
+        zIndex
         textNode {
           childMarkdownRemark {
             html
