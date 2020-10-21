@@ -4,6 +4,9 @@ p {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+title {
+  content: "Cultural Matter" !important;
+}
 
 @font-face {
   font-family: "roboto-regular";
@@ -18,8 +21,7 @@ p {
 body {
   background: #ccc;
   font-family: "roboto-regular";
-  font-size: 17px;
-  letter-spacing: 0.4;
+  font-size: 15px;
   overflow: hidden;
 }
 
