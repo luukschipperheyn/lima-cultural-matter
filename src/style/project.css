@@ -16,13 +16,13 @@ p {
 
 @font-face {
   font-family: "archivo-italic";
-  src: url("Archivo-Italic.ttf");
+  src: url("Archivo-Italic.woff");
 }
 
-@font-face {
+/* @font-face {
   font-family: "archivo-bold";
   src: url("Archivo-bold.woff");
-}
+} */
 
 @font-face {
   font-family: "archivo-semibold";
@@ -63,7 +63,7 @@ body {
 
 .h1box2 {
   position: absolute;
-  font-family: "archivo-bold";
+  font-family: "archivo-semibold";
   bottom: 0px;
   left: 75%;
   min-width: 200px;
@@ -274,7 +274,7 @@ div.product.selected {
 
 .top-menu--body {
   font-size: 16px;
-  font-family: "archivo-bold";
+  font-family: "archivo-semibold";
   font-weight: normal;
   text-align: left;
   line-height: 1.3;
