@@ -1,16 +1,17 @@
-import { graphql, Link } from "gatsby";
+import { graphql } from "gatsby";
 import Img from "gatsby-image";
-import React, { useEffect, useState } from "react";
-import "../style/project.css";
+import React, { useState } from "react";
 import Draggable from "react-draggable";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import limaLogo from "../assets/LIMA_logo_staand_wit.png";
-import { FaChevronUp, FaChevronDown } from "react-icons/fa";
+import "../style/project.css";
+import { HelmetDatoCms } from "gatsby-source-datocms";
 
 export default ({ data }) => {
-  if (typeof window === "undefined") {
-    return <></>;
-  }
   const project = data.datoCmsProject;
+  if (typeof window === "undefined") {
+    return <HelmetDatoCms seo={project.seoMetaTags} />;
+  }
   const [openWindows, setOpenWindows] = useState(
     project.links.map((link) => link.open)
   );
@@ -54,6 +55,7 @@ export default ({ data }) => {
         color: project.textcolor.hex,
       }}
     >
+      <HelmetDatoCms seo={project.seoMetaTags} />
       <div className="h1box1" style={{ background: project.menucolor.hex }}>
         <p>{project.title}</p>
         {/* 
@@ -263,6 +265,9 @@ export const query = graphql`
             mp4Url(res: medium)
           }
         }
+      }
+      seoMetaTags {
+        ...GatsbyDatoCmsSeoMetaTags
       }
     }
   }
