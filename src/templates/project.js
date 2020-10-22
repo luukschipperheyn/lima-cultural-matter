@@ -56,9 +56,9 @@ export default ({ data }) => {
       }}
     >
       <HelmetDatoCms seo={project.seoMetaTags} />
-      <div className="h1box1" style={{ background: project.menucolor.hex }}>
-        <p>{project.title}</p>
-        {/* 
+      {/* <div className="h1box1" style={{ background: project.menucolor.hex }}>
+        <p>{project.title}</p> */}
+      {/* 
         {" "}
         {data.allprojects.edges.filter((currentproject) => {
           return currentproject.node.slug !== project.slug;
@@ -74,6 +74,44 @@ export default ({ data }) => {
         }
         )}
          */}
+      {/* Toevoegen dropdown Rafael */}
+      <div
+        className="h1box1"
+        style={{
+          background: project.menucolor.hex,
+        }}
+      >
+        <p
+          className="top-menu--title"
+          // onClick={() => setShowAbout(!showAbout)}
+          style={{
+            color: project.textcolor.hex,
+          }}
+        >
+          {/* <span className="top-menu--icon">
+            {!showAbout && <FaChevronDown />}
+            {showAbout && <FaChevronUp />}
+          </span> */}
+          {project.title}
+        </p>
+        {/* {showAbout && (
+          <p className="top-menu--body">
+            {" "}
+            {data.allprojects.edges
+              .filter((currentproject) => {
+                return currentproject.node.slug !== project.slug;
+              })
+              .map((project, i) => {
+                return (
+                  <div key={`project-${i}`}>
+                    <Link to={`/projects/${project.node.slug}`}>
+                      {project.node.title}
+                    </Link>
+                  </div>
+                );
+              })}
+          </p>
+        )} */}
       </div>
 
       <div
@@ -185,6 +223,7 @@ export default ({ data }) => {
                     style={dragging ? { pointerEvents: "none" } : {}}
                     src={link.url}
                     frameBorder="0"
+                    scrolling="no"
                   ></iframe>
                 )}
                 {link.image && link.image.fluid && (
