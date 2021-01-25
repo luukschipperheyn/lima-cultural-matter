@@ -1,4 +1,4 @@
-import { graphql } from "gatsby";
+import { graphql, Link } from "gatsby";
 import Img from "gatsby-image";
 import React, { useState } from "react";
 import Draggable from "react-draggable";
@@ -35,6 +35,7 @@ export default ({ data }) => {
   const [selectedWindow, setSelectedWindow] = useState(null);
   const [dragging, setDragging] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
+  const [showProjects, setShowProjects] = useState(false);
   const selectWindow = (i) => {
     const highestZIndex = zIndexes.reduce(
       (acc, val) => (val > acc ? val : acc),
@@ -83,35 +84,40 @@ export default ({ data }) => {
       >
         <p
           className="top-menu--title"
-          // onClick={() => setShowAbout(!showAbout)}
+          onClick={() => setShowProjects(!showProjects)}
           style={{
             color: project.textcolor.hex,
           }}
         >
-          {/* <span className="top-menu--icon">
-            {!showAbout && <FaChevronDown />}
-            {showAbout && <FaChevronUp />}
-          </span> */}
-          {project.title}
+          <span className="top-menu--title-text">{project.title}</span>
+          <span className="top-menu--icon">
+            {!showProjects && <FaChevronDown />}
+            {showProjects && <FaChevronUp />}
+          </span>
         </p>
-        {/* {showAbout && (
+        {showProjects && (
           <p className="top-menu--body">
             {" "}
             {data.allprojects.edges
               .filter((currentproject) => {
                 return currentproject.node.slug !== project.slug;
               })
-              .map((project, i) => {
+              .map((otherProject, i) => {
                 return (
                   <div key={`project-${i}`}>
-                    <Link to={`/projects/${project.node.slug}`}>
-                      {project.node.title}
+                    <Link
+                      style={{
+                        color: project.textcolor.hex,
+                      }}
+                      to={`/projects/${otherProject.node.slug}`}
+                    >
+                      {otherProject.node.title}
                     </Link>
                   </div>
                 );
               })}
           </p>
-        )} */}
+        )}
       </div>
 
       <div
@@ -125,11 +131,11 @@ export default ({ data }) => {
           className="bottom-menu--title"
           onClick={() => setShowAbout(!showAbout)}
         >
+          <span className="bottom-menu--title-text">Cultural Matter</span>
           <span className="bottom-menu--icon">
             {showAbout && <FaChevronDown />}
             {!showAbout && <FaChevronUp />}
           </span>
-          Cultural Matter
         </p>
         {showAbout && (
           <p className="bottom-menu--body">
@@ -175,6 +181,7 @@ export default ({ data }) => {
             handle=".window-title"
             defaultPosition={defaultPositions[i]}
             bounds={{ top: 0 }}
+            key={`project=${i}`}
           >
             <div
               key={`link-${i}`}
@@ -184,6 +191,9 @@ export default ({ data }) => {
               style={{
                 background: link.onecolor ? link.onecolor.hex : undefined,
                 zIndex: zIndexes[i],
+                boxShadow: link.shadowCss ? link.shadowCss : undefined,
+                color: link.textColor ? link.textColor.hex : undefined,
+                visibility: link.hidden ? "hidden" : undefined,
               }}
             >
               <p
@@ -198,7 +208,11 @@ export default ({ data }) => {
                     )
                   )
                 }
-                style={{ color: project.textcolor.hex }}
+                style={{
+                  color: link.windowTitleTextColor
+                    ? link.windowTitleTextColor.hex
+                    : project.textcolor.hex,
+                }}
               >
                 {link.itemtitle}
               </p>
@@ -288,6 +302,14 @@ export const query = graphql`
         open
         autoplay
         zIndex
+        shadowCss
+        textColor {
+          hex
+        }
+        windowTitleTextColor {
+          hex
+        }
+        hidden
         textNode {
           childMarkdownRemark {
             html

@@ -4,16 +4,15 @@ const webpack = require(`webpack`);
 
 exports.createPages = ({ graphql, actions }) => {
   const { createPage, createRedirect } = actions;
-  createRedirect({
-    fromPath: "/",
-    toPath: "/projects/amaliaulman",
-    isPermanent: false,
-    redirectInBrowser: true,
-  });
 
   return new Promise((resolve, reject) => {
     graphql(`
       {
+        datoCmsSiteConfig {
+          defaultProject {
+            slug
+          }
+        }
         allDatoCmsProject {
           edges {
             node {
@@ -24,6 +23,12 @@ exports.createPages = ({ graphql, actions }) => {
       }
     `)
       .then((result) => {
+        createRedirect({
+          fromPath: "/",
+          toPath: `/projects/${result.data.datoCmsSiteConfig.defaultProject.slug}`,
+          isPermanent: false,
+          redirectInBrowser: true,
+        });
         result.data.allDatoCmsProject.edges.map(({ node: project }) => {
           createPage({
             path: `projects/${project.slug}`,
