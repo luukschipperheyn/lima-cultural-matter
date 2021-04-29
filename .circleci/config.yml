@@ -2,12 +2,12 @@ version: 2.1
 orbs:
   node: circleci/node@3.0.0
 jobs:
-  install-and-deploy:
+  build:
     docker:
       - image: circleci/node:14.0.0
         auth:
           username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+          password: $DOCKERHUB_PASSWORD # context / project UI env-var reference
     steps:
       - run: node --version
       - checkout
@@ -22,9 +22,8 @@ jobs:
           name: Notify DatoCMS about the status of the job
           command: 'curl -X POST --data-binary "{\"payload\": { \"branch\": \"$CIRCLE_BRANCH\", \"status\": \"success\" } }" https://webhooks.datocms.com/jdxmJLwZBk/deploy-results'
           when: on_success
-  
+
 workflows:
   build:
     jobs:
-      - install-and-deploy
-
+      - build
