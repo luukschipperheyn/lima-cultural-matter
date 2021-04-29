@@ -1,8 +1,7 @@
 version: 2.1
 orbs:
-  node: circleci/node@4.3.0
-  deploy: oddhill/deploy@0.2.0
+  node: circleci/node@3.0.0
 workflows:
-  build-and-deploy:
+  node-tests:
     jobs:
       - node/test
