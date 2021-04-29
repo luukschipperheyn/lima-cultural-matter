@@ -24,7 +24,7 @@ jobs:
           when: on_success
   
 workflows:
-  test_my_app:
+  build:
     jobs:
       - install-and-deploy
 
