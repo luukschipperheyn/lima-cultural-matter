@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   node: circleci/node@3.0.0
 jobs:
-  install-node-example:
+  install-and-deploy:
     docker:
       - image: circleci/node:14.0.0
         auth:
@@ -13,9 +13,9 @@ jobs:
       - checkout
       - run: yarn
       - run: yarn build
-      - run: ls
+      - run: scp -r -P 7171 ./public/* unfold@vs.li-ma.nl:site/
 workflows:
   test_my_app:
     jobs:
-      - install-node-example
+      - install-and-deploy
 
