@@ -9,10 +9,11 @@ jobs:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
-      - checkout
-      - node/install:
-          install-yarn: true
       - run: node --version
+      - checkout
+      - run: yarn
+      - run: yarn build
+      - run: ls
 workflows:
   test_my_app:
     jobs:
