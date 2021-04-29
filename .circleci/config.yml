@@ -4,7 +4,10 @@ orbs:
 jobs:
   install-node-example:
     docker:
-      - image: 'cimg/node:14.0'
+      - image: circleci/<language>:<version TAG>
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout
       - node/install:
