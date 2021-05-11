@@ -1,11 +1,12 @@
 import { graphql, Link } from "gatsby";
 import Img from "gatsby-image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Draggable from "react-draggable";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import limaLogo from "../assets/LIMA_logo_staand_wit.png";
 import "../style/project.css";
 import { HelmetDatoCms } from "gatsby-source-datocms";
+import dayjs from "dayjs";
 
 export default ({ data }) => {
   const project = data.datoCmsProject;
@@ -14,6 +15,28 @@ export default ({ data }) => {
   }
   const [openWindows, setOpenWindows] = useState(
     project.links.map((link) => link.open)
+  );
+  const [globalClock, setGlobalClock] = useState(0);
+  useEffect(() => {
+    const timeout = setTimeout(() => setGlobalClock(globalClock + 1));
+    const now = dayjs();
+    setCountdowns(
+      project.links.map((link, i) => {
+        if (!link.startTime) {
+          return 0;
+        }
+        const then = dayjs(link.startTime);
+        const diff = then.diff(now, "second");
+        if (countdowns[i] > 0 && diff === 0) {
+          selectWindow(i);
+        }
+        return Math.max(0, diff);
+      })
+    );
+    return () => clearTimeout(timeout);
+  }, [globalClock]);
+  const [countdowns, setCountdowns] = useState(
+    project.links.map((link) => link.startTime)
   );
   const [zIndexes, setZIndexes] = useState(
     project.links.map((link) =>
@@ -131,30 +154,13 @@ export default ({ data }) => {
           className="bottom-menu--title"
           onClick={() => setShowAbout(!showAbout)}
         >
-          <span className="bottom-menu--title-text">Cultural Matter</span>
+          <span className="bottom-menu--title-text">Unfold</span>
           <span className="bottom-menu--icon">
             {showAbout && <FaChevronDown />}
             {!showAbout && <FaChevronUp />}
           </span>
         </p>
-        {showAbout && (
-          <p className="bottom-menu--body">
-            Digital culture keeps on coming up with the newest, the best and the
-            fastest. But what do we know about its history? Artists have been
-            designing, critiquing and manipulating new technologies for decades.
-            Work by earlier Internet artists, post-Internet artists, hackers and
-            media activists is no longer always understood in the light of the
-            current state of technology, while it still has a lot to say about
-            contemporary technology – and art. These ‘media artists’ have left
-            their mark on our current society through their critical use of new
-            technologies. Thanks to their awareness of, and break with, art
-            history, they can justifiably be called the new avant-garde.
-            Cultural Matter highlights the enduring expressive power of digital
-            artworks: works in which art and technology and the past and the
-            future come together in a way that is as logical as it is
-            groundbreaking.
-          </p>
-        )}
+        {showAbout && <p className="bottom-menu--body"></p>}
       </div>
       <div
         className="h1box3"
@@ -212,53 +218,108 @@ export default ({ data }) => {
                   color: link.windowTitleTextColor
                     ? link.windowTitleTextColor.hex
                     : project.textcolor.hex,
+                  position: "relative",
+                  overflow: "hidden",
                 }}
               >
                 {link.itemtitle}
+                {!!countdowns[i] && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      height: 2,
+                      right: 0,
+                      width: countdowns[i],
+                      background: link.windowTitleTextColor
+                        ? link.windowTitleTextColor.hex
+                        : project.textcolor.hex,
+                    }}
+                  />
+                )}
               </p>
 
               <div
                 className="box"
-                style={{ height: link.height, width: link.width }}
+                style={{
+                  height: link.height
+                    ? !!countdowns[i]
+                      ? link.height * 0.75
+                      : link.height
+                    : !!countdowns[i]
+                    ? 100
+                    : 200,
+                  width: link.width
+                    ? !!countdowns[i]
+                      ? link.width * 0.75
+                      : link.width
+                    : !!countdowns[i]
+                    ? 200
+                    : 400,
+                }}
               >
-                {link.textNode && (
-                  <div
-                    className="box-text"
-                    style={{
-                      background: link.onecolor ? link.onecolor.hex : undefined,
-                    }}
-                    dangerouslySetInnerHTML={{
-                      __html: link.textNode.childMarkdownRemark.html,
-                    }}
-                  />
+                {!!countdowns[i] && (
+                  <>
+                    {link.preStartMessageNode && (
+                      <div
+                        className="box-text"
+                        style={{
+                          background: link.onecolor
+                            ? link.onecolor.hex
+                            : undefined,
+                        }}
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            link.preStartMessageNode.childMarkdownRemark.html,
+                        }}
+                      />
+                    )}
+                  </>
                 )}
-                {link.url && (
-                  <iframe
-                    style={dragging ? { pointerEvents: "none" } : {}}
-                    src={link.url}
-                    frameBorder="0"
-                    scrolling="no"
-                  ></iframe>
-                )}
-                {link.image && link.image.fluid && (
-                  <Img fluid={link.image.fluid} />
-                )}
-                {link.image && link.image.video && (
-                  <video
-                    autoPlay={link.autoplay}
-                    loop={link.autoplay}
-                    muted={link.autoplay}
-                    controls={!link.autoplay}
-                    src={link.image.video.mp4Url}
-                  />
-                )}
-                {selectedWindow !== i && (
-                  <div
-                    className="window--overlay"
-                    onMouseDownCapture={() => {
-                      selectWindow(i);
-                    }}
-                  ></div>
+                {!countdowns[i] && (
+                  <>
+                    {link.textNode && (
+                      <div
+                        className="box-text"
+                        style={{
+                          background: link.onecolor
+                            ? link.onecolor.hex
+                            : undefined,
+                        }}
+                        dangerouslySetInnerHTML={{
+                          __html: link.textNode.childMarkdownRemark.html,
+                        }}
+                      />
+                    )}
+                    {link.url && (
+                      <iframe
+                        style={dragging ? { pointerEvents: "none" } : {}}
+                        src={link.url}
+                        frameBorder="0"
+                        scrolling="no"
+                      ></iframe>
+                    )}
+                    {link.image && link.image.fluid && (
+                      <Img fluid={link.image.fluid} />
+                    )}
+                    {link.image && link.image.video && (
+                      <video
+                        autoPlay={link.autoplay}
+                        loop={link.autoplay}
+                        muted={link.autoplay}
+                        controls={!link.autoplay}
+                        src={link.image.video.mp4Url}
+                      />
+                    )}
+                    {selectedWindow !== i && (
+                      <div
+                        className="window--overlay"
+                        onMouseDownCapture={() => {
+                          selectWindow(i);
+                        }}
+                      ></div>
+                    )}
+                  </>
                 )}
               </div>
             </div>
@@ -324,6 +385,12 @@ export const query = graphql`
           }
           video {
             mp4Url(res: medium)
+          }
+        }
+        startTime
+        preStartMessageNode {
+          childMarkdownRemark {
+            html
           }
         }
       }
