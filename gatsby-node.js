@@ -6,6 +6,13 @@ exports.createPages = ({ graphql, actions }) => {
   const { createPage, createRedirect } = actions;
 
   return new Promise((resolve, reject) => {
+    createPage({
+      path: "/",
+      component: path.resolve(`./src/templates/project.js`),
+      context: {
+        slug: "test",
+      },
+    });
     graphql(`
       {
         datoCmsSiteConfig {
@@ -23,13 +30,6 @@ exports.createPages = ({ graphql, actions }) => {
       }
     `)
       .then((result) => {
-        createPage({
-          path: "/",
-          component: path.resolve(`./src/templates/project.js`),
-          context: {
-            slug: "test",
-          },
-        });
         result.data.allDatoCmsProject.edges.map(({ node: project }) => {
           createPage({
             path: `projects/${project.slug}`,
