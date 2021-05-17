@@ -57,7 +57,7 @@ export default ({ data }) => {
   );
   const [selectedWindow, setSelectedWindow] = useState(null);
   const [dragging, setDragging] = useState(false);
-  const [showAbout, setShowAbout] = useState(false);
+  const [showAbout, setShowAbout] = useState(true);
   const [showProjects, setShowProjects] = useState(false);
   const selectWindow = (i) => {
     const highestZIndex = zIndexes.reduce(
@@ -71,31 +71,97 @@ export default ({ data }) => {
     );
     setSelectedWindow(i);
   };
-  // const [accessGranted, setAccessGranted] = useState(false);
-  // const [passwordInput, setPasswordInput] = useState('')
+  const [accessGranted, setAccessGranted] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [showPasswordError, setShowPasswordError] = useState(false);
 
-  // if (!accessGranted) {
-  //   return (
-  //     <div
-  //       className="projectcontainer"
-  //       style={{
-  //         background: project.backgroundcolor.hex,
-  //         color: project.textcolor.hex,
-  //       }}
-  //     >
-  //       <div>
-  //         <h1>Unfold</h1>
-  //         <h2>Enter Passord</h2>
-  //         <input
-  //           type="password"
-  //           onChange={e => setPasswordInput(e.target.value)}
-  //           value={passwordInput}
-  //         />
-  //         <div onClick={}></div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (!accessGranted) {
+    return (
+      <div
+        className="projectcontainer"
+        style={{
+          background: project.backgroundcolor.hex,
+        }}
+      >
+        <Draggable
+          onStart={() => setDragging(true)}
+          onStop={(e) => {
+            setDragging(false);
+          }}
+          handle=".window-title"
+          defaultPosition={{ x: 200, y: 200 }}
+          bounds={{ top: 0 }}
+        >
+          <div
+            className={`window open selected`}
+            style={{
+              background: project.menucolor.hex,
+              color: project.textcolor.hex,
+            }}
+          >
+            <p
+              className="window-title"
+              style={{
+                position: "relative",
+                overflow: "hidden",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                background: project.textcolor.hex,
+                color: project.menucolor.hex,
+              }}
+            >
+              <span>Unfold - enter password</span>
+            </p>
+
+            <div
+              className="box"
+              style={{
+                height: 200,
+                width: 400,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              <div style={{}}>
+                <input
+                  style={{ height: 30 }}
+                  type="password"
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  value={passwordInput}
+                />
+                <div
+                  style={{
+                    height: 36,
+                    display: "inline-flex",
+                    cursor: "pointer",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: "0px 16px",
+                    marginLeft: 16,
+                    background: project.textcolor.hex,
+                    color: project.menucolor.hex,
+                  }}
+                  onClick={() => {
+                    setAccessGranted(passwordInput === project.password);
+                    setShowPasswordError(passwordInput !== project.password);
+                    setPasswordInput("");
+                  }}
+                >
+                  Enter
+                </div>
+              </div>
+              {showPasswordError && (
+                <div style={{ marginTop: 16 }}>Incorrect password</div>
+              )}
+            </div>
+          </div>
+        </Draggable>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -192,7 +258,7 @@ export default ({ data }) => {
               >
                 <span>{link.itemtitle}</span>
                 {!!countdowns[i] && (
-                  <span>
+                  <span style={{ display: "inline-block", marginLeft: 20 }}>
                     {new Date(countdowns[i] * 1000).toISOString().substr(11, 8)}
                   </span>
                 )}
@@ -267,20 +333,24 @@ export default ({ data }) => {
                         }}
                       />
                     )}
-                    {link.url && link.url.toLowerCase().endsWith("pdf") ? (
-                      <embed
-                        src={link.url}
-                        type="application/pdf"
-                        width="100%"
-                        height="100%"
-                      />
-                    ) : (
-                      <iframe
-                        style={dragging ? { pointerEvents: "none" } : {}}
-                        src={link.url}
-                        frameBorder="0"
-                        scrolling={link.enableScroll ? "yes" : "no"}
-                      ></iframe>
+                    {!!link.url && (
+                      <>
+                        {link.url.toLowerCase().endsWith("pdf") ? (
+                          <embed
+                            src={link.url}
+                            type="application/pdf"
+                            width="100%"
+                            height="100%"
+                          />
+                        ) : (
+                          <iframe
+                            style={dragging ? { pointerEvents: "none" } : {}}
+                            src={link.url}
+                            frameBorder="0"
+                            scrolling={link.enableScroll ? "yes" : "no"}
+                          ></iframe>
+                        )}
+                      </>
                     )}
                     {link.image && link.image.fluid && (
                       <Img fluid={link.image.fluid} />
@@ -327,6 +397,7 @@ export const query = graphql`
       title
       slug
       description
+      password
       backgroundcolor {
         hex
       }
