@@ -23,11 +23,12 @@ exports.createPages = ({ graphql, actions }) => {
       }
     `)
       .then((result) => {
-        createRedirect({
-          fromPath: "/",
-          toPath: `/projects/${result.data.datoCmsSiteConfig.defaultProject.slug}`,
-          isPermanent: false,
-          redirectInBrowser: true,
+        createPage({
+          path: "/",
+          component: path.resolve(`./src/templates/project.js`),
+          context: {
+            slug: "test",
+          },
         });
         result.data.allDatoCmsProject.edges.map(({ node: project }) => {
           createPage({

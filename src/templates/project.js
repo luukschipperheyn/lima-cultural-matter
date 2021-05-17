@@ -3,7 +3,7 @@ import Img from "gatsby-image";
 import React, { useEffect, useState } from "react";
 import Draggable from "react-draggable";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import limaLogo from "../assets/LIMA_logo_staand_wit.png";
+import limaLogo from "../assets/LIMA_logo_staand_zwart.png";
 import "../style/project.css";
 import { HelmetDatoCms } from "gatsby-source-datocms";
 import dayjs from "dayjs";
@@ -80,69 +80,6 @@ export default ({ data }) => {
       }}
     >
       <HelmetDatoCms seo={project.seoMetaTags} />
-      {/* <div className="h1box1" style={{ background: project.menucolor.hex }}>
-        <p>{project.title}</p> */}
-      {/* 
-        {" "}
-        {data.allprojects.edges.filter((currentproject) => {
-          return currentproject.node.slug !== project.slug;
-        })
-        .map((project, i) => {
-          return (
-            <div key={`project-${i}`}>
-              <Link to={`/projects/${project.node.slug}`}>
-                {project.node.title}
-              </Link>
-            </div>
-        );
-        }
-        )}
-         */}
-      {/* Toevoegen dropdown Rafael */}
-      <div
-        className="h1box1"
-        style={{
-          background: project.menucolor.hex,
-        }}
-      >
-        <p
-          className="top-menu--title"
-          onClick={() => setShowProjects(!showProjects)}
-          style={{
-            color: project.textcolor.hex,
-          }}
-        >
-          <span className="top-menu--title-text">{project.title}</span>
-          <span className="top-menu--icon">
-            {!showProjects && <FaChevronDown />}
-            {showProjects && <FaChevronUp />}
-          </span>
-        </p>
-        {showProjects && (
-          <p className="top-menu--body">
-            {" "}
-            {data.allprojects.edges
-              .filter((currentproject) => {
-                return currentproject.node.slug !== project.slug;
-              })
-              .map((otherProject, i) => {
-                return (
-                  <div key={`project-${i}`}>
-                    <Link
-                      style={{
-                        color: project.textcolor.hex,
-                      }}
-                      to={`/projects/${otherProject.node.slug}`}
-                    >
-                      {otherProject.node.title}
-                    </Link>
-                  </div>
-                );
-              })}
-          </p>
-        )}
-      </div>
-
       <div
         className="h1box2 bottom-menu"
         style={{
@@ -160,7 +97,9 @@ export default ({ data }) => {
             {!showAbout && <FaChevronUp />}
           </span>
         </p>
-        {showAbout && <p className="bottom-menu--body"></p>}
+        {showAbout && (
+          <p className="bottom-menu--body">{project.description}</p>
+        )}
       </div>
       <div
         className="h1box3"
@@ -220,9 +159,16 @@ export default ({ data }) => {
                     : project.textcolor.hex,
                   position: "relative",
                   overflow: "hidden",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
                 }}
               >
-                {link.itemtitle}
+                <span>{link.itemtitle}</span>
+                <span>
+                  {!!countdowns[i] &&
+                    new Date(countdowns[i] * 1000).toISOString().substr(11, 8)}
+                </span>
                 {!!countdowns[i] && (
                   <span
                     style={{
@@ -260,6 +206,9 @@ export default ({ data }) => {
               >
                 {!!countdowns[i] && (
                   <>
+                    {link.preStartImage && link.preStartImage.fluid && (
+                      <Img fluid={link.preStartImage.fluid} />
+                    )}
                     {link.preStartMessageNode && (
                       <div
                         className="box-text"
@@ -296,7 +245,7 @@ export default ({ data }) => {
                         style={dragging ? { pointerEvents: "none" } : {}}
                         src={link.url}
                         frameBorder="0"
-                        scrolling="no"
+                        scrolling={link.enableScroll ? "yes" : "no"}
                       ></iframe>
                     )}
                     {link.image && link.image.fluid && (
@@ -311,15 +260,15 @@ export default ({ data }) => {
                         src={link.image.video.mp4Url}
                       />
                     )}
-                    {selectedWindow !== i && (
-                      <div
-                        className="window--overlay"
-                        onMouseDownCapture={() => {
-                          selectWindow(i);
-                        }}
-                      ></div>
-                    )}
                   </>
+                )}
+                {selectedWindow !== i && (
+                  <div
+                    className="window--overlay"
+                    onMouseDownCapture={() => {
+                      selectWindow(i);
+                    }}
+                  ></div>
                 )}
               </div>
             </div>
@@ -356,6 +305,7 @@ export const query = graphql`
       links {
         itemtitle
         url
+        enableScroll
         xposition
         yposition
         width
@@ -385,6 +335,11 @@ export const query = graphql`
           }
           video {
             mp4Url(res: medium)
+          }
+        }
+        preStartImage {
+          fluid(maxWidth: 600, imgixParams: { fm: "jpg", auto: "compress" }) {
+            ...GatsbyDatoCmsFluid
           }
         }
         startTime
