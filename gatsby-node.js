@@ -3,16 +3,9 @@ const { createFilePath } = require(`gatsby-source-filesystem`);
 const webpack = require(`webpack`);
 
 exports.createPages = ({ graphql, actions }) => {
-  const { createPage, createRedirect } = actions;
+  const { createPage } = actions;
 
-  return new Promise((resolve, reject) => {
-    createPage({
-      path: "/",
-      component: path.resolve(`./src/templates/project.js`),
-      context: {
-        slug: "test",
-      },
-    });
+  return new Promise((resolve, reject) =>
     graphql(`
       {
         datoCmsSiteConfig {
@@ -40,8 +33,8 @@ exports.createPages = ({ graphql, actions }) => {
           });
         });
       })
-      .then(resolve);
-  });
+      .then(resolve)
+  );
 };
 
 //gatsby-node.js
