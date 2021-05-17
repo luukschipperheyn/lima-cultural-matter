@@ -71,6 +71,32 @@ export default ({ data }) => {
     );
     setSelectedWindow(i);
   };
+  // const [accessGranted, setAccessGranted] = useState(false);
+  // const [passwordInput, setPasswordInput] = useState('')
+
+  // if (!accessGranted) {
+  //   return (
+  //     <div
+  //       className="projectcontainer"
+  //       style={{
+  //         background: project.backgroundcolor.hex,
+  //         color: project.textcolor.hex,
+  //       }}
+  //     >
+  //       <div>
+  //         <h1>Unfold</h1>
+  //         <h2>Enter Passord</h2>
+  //         <input
+  //           type="password"
+  //           onChange={e => setPasswordInput(e.target.value)}
+  //           value={passwordInput}
+  //         />
+  //         <div onClick={}></div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
   return (
     <div
       className="projectcontainer"
@@ -241,7 +267,14 @@ export default ({ data }) => {
                         }}
                       />
                     )}
-                    {link.url && (
+                    {link.url && link.url.toLowerCase().endsWith("pdf") ? (
+                      <embed
+                        src={link.url}
+                        type="application/pdf"
+                        width="100%"
+                        height="100%"
+                      />
+                    ) : (
                       <iframe
                         style={dragging ? { pointerEvents: "none" } : {}}
                         src={link.url}
