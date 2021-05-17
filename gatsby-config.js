@@ -14,6 +14,5 @@ module.exports = {
         apiToken: process.env.DATO_API_TOKEN,
       },
     },
-    `gatsby-plugin-netlify`,
   ],
 };
