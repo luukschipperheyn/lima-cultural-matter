@@ -36,7 +36,7 @@ export default ({ data }) => {
     return () => clearTimeout(timeout);
   }, [globalClock]);
   const [countdowns, setCountdowns] = useState(
-    project.links.map((link) => link.startTime)
+    project.links.map((link) => dayjs(link.startTime).diff(dayjs(), "second"))
   );
   const [zIndexes, setZIndexes] = useState(
     project.links.map((link) =>
@@ -165,10 +165,11 @@ export default ({ data }) => {
                 }}
               >
                 <span>{link.itemtitle}</span>
-                <span>
-                  {!!countdowns[i] &&
-                    new Date(countdowns[i] * 1000).toISOString().substr(11, 8)}
-                </span>
+                {!!countdowns[i] && (
+                  <span>
+                    {new Date(countdowns[i] * 1000).toISOString().substr(11, 8)}
+                  </span>
+                )}
                 {!!countdowns[i] && (
                   <span
                     style={{

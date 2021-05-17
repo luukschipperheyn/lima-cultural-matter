@@ -23,16 +23,27 @@ exports.createPages = ({ graphql, actions }) => {
       }
     `)
       .then((result) => {
-        result.data.allDatoCmsProject.edges.map(({ node: project }) => {
-          createPage({
-            path: `projects/${project.slug}`,
-            component: path.resolve(`./src/templates/project.js`),
-            context: {
-              slug: project.slug,
-            },
-          });
-        });
+        Promise.all(
+          result.data.allDatoCmsProject.edges.map(({ node: project }) => {
+            createPage({
+              path: `projects/${project.slug}`,
+              component: path.resolve(`./src/templates/project.js`),
+              context: {
+                slug: project.slug,
+              },
+            });
+          })
+        );
       })
+      .then(() =>
+        createPage({
+          path: `/`,
+          component: path.resolve(`./src/templates/project.js`),
+          context: {
+            slug: "test",
+          },
+        })
+      )
       .then(resolve)
   );
 };
