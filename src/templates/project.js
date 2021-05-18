@@ -47,10 +47,7 @@ export default ({ data }) => {
     project.links.map((link) => ({
       x:
         link.xposition !== null
-          ? Math.max(
-              0,
-              (link.xposition / 100) * (window.innerWidth - link.width)
-            )
+          ? Math.max(0, (link.xposition / 100) * window.innerWidth)
           : Math.max(0, Math.random() * (window.innerWidth - link.width)),
       y:
         link.yposition !== null
