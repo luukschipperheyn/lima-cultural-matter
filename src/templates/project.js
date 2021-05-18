@@ -54,7 +54,7 @@ export default ({ data }) => {
           : Math.max(0, Math.random() * (window.innerWidth - link.width)),
       y:
         link.yposition !== null
-          ? Math.max(0, (link.yposition / 100) * (window.innerHeight - 600))
+          ? Math.max(0, (link.yposition / 100) * window.innerHeight)
           : Math.max(0, Math.random() * (window.innerHeight - 600)),
     }))
   );
