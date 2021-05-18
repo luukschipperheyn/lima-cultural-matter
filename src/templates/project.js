@@ -117,7 +117,7 @@ export default ({ data }) => {
             <div
               className="box"
               style={{
-                height: 200,
+                padding: "32px 0px",
                 width: 400,
                 display: "flex",
                 justifyContent: "center",
@@ -125,6 +125,12 @@ export default ({ data }) => {
                 flexDirection: "column",
               }}
             >
+              <div
+                style={{ textAlign: "center", marginBottom: 16 }}
+                dangerouslySetInnerHTML={{
+                  __html: project.passwordMessageNode.childMarkdownRemark.html,
+                }}
+              />
               <div style={{}}>
                 <input
                   style={{ height: 30 }}
@@ -259,7 +265,7 @@ export default ({ data }) => {
                 <span>{link.itemtitle}</span>
                 {!!countdowns[i] && (
                   <span style={{ display: "inline-block", marginLeft: 20 }}>
-                    {new Date(countdowns[i] * 1000).toISOString().substr(11, 8)}
+                    {FormatSecondsAsDurationString(countdowns[i])}
                   </span>
                 )}
                 {!!countdowns[i] && (
@@ -398,6 +404,11 @@ export const query = graphql`
       slug
       description
       password
+      passwordMessageNode {
+        childMarkdownRemark {
+          html
+        }
+      }
       backgroundcolor {
         hex
       }
@@ -460,3 +471,34 @@ export const query = graphql`
     }
   }
 `;
+
+function FormatSecondsAsDurationString(seconds) {
+  var s = "";
+
+  var days = Math.floor(seconds / 3600 / 24);
+  if (days >= 1) {
+    // s += days.toString() + " day" + (days == 1 ? "" : "s") + " + ";
+    seconds -= days * 24 * 3600;
+  }
+
+  var hours = Math.floor(seconds / 3600);
+  s += GetPaddedIntString((hours + days * 24).toString(), 2) + ":";
+  seconds -= hours * 3600;
+
+  var minutes = Math.floor(seconds / 60);
+  s += GetPaddedIntString(minutes.toString(), 2) + ":";
+  seconds -= minutes * 60;
+
+  s += GetPaddedIntString(Math.floor(seconds).toString(), 2);
+
+  return s;
+}
+
+function GetPaddedIntString(n, numDigits) {
+  var nPadded = n;
+  for (; nPadded.length < numDigits; ) {
+    nPadded = "0" + nPadded;
+  }
+
+  return nPadded;
+}
