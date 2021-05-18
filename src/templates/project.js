@@ -47,11 +47,14 @@ export default ({ data }) => {
     project.links.map((link) => ({
       x:
         link.xposition !== null
-          ? link.xposition
+          ? Math.max(
+              0,
+              (link.xposition / 100) * (window.innerWidth - link.width)
+            )
           : Math.max(0, Math.random() * (window.innerWidth - link.width)),
       y:
         link.yposition !== null
-          ? link.yposition
+          ? Math.max(0, (link.yposition / 100) * (window.innerHeight - 600))
           : Math.max(0, Math.random() * (window.innerHeight - 600)),
     }))
   );
@@ -111,7 +114,7 @@ export default ({ data }) => {
                 color: project.menucolor.hex,
               }}
             >
-              <span>Unfold - enter password</span>
+              <span>Welcome to UNFOLD: Nan Hoover!</span>
             </p>
 
             <div
