@@ -14,12 +14,16 @@ jobs:
       - run: yarn
       - run: yarn build
       # - run: scp -r -P 7171 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ./public/* unfold@vs.li-ma.nl:site/
-      - run:
-          name: Notify DatoCMS about the status of the job
-          command: 'curl -X POST -k --data-binary "{\"payload\": { \"branch\": \"$CIRCLE_BRANCH\", \"status\": \"failed\" } }" https://webhooks.datocms.com/cv1fzzWMK9/deploy-results'
-          when: on_fail
-      - run:
-          name: Notify DatoCMS about the status of the job
-          command: 'curl -X POST -k --data-binary "{\"payload\": { \"branch\": \"$CIRCLE_BRANCH\", \"status\": \"success\" } }" https://webhooks.datocms.com/cv1fzzWMK9/deploy-results'
-          when: on_success    
+      # - run:
+      #     name: Notify DatoCMS about the status of the job
+      #     command: 'curl -X POST -k --data-binary "{\"payload\": { \"branch\": \"$CIRCLE_BRANCH\", \"status\": \"failed\" } }" https://webhooks.datocms.com/cv1fzzWMK9/deploy-results'
+      #     when: on_fail
+      # - run:
+      #     name: Notify DatoCMS about the status of the job
+      #     command: 'curl -X POST -k --data-binary "{\"payload\": { \"branch\": \"$CIRCLE_BRANCH\", \"status\": \"success\" } }" https://webhooks.datocms.com/cv1fzzWMK9/deploy-results'
+      #     when: on_success    
 
+workflows:
+  build:
+    jobs:
+      - build
