@@ -40,7 +40,7 @@ exports.createPages = ({ graphql, actions }) => {
           path: `/`,
           component: path.resolve(`./src/templates/project.js`),
           context: {
-            slug: "test",
+            slug: "index",
           },
         })
       )

@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 
 export default ({ data }) => {
   const project = data.datoCmsProject;
-  if (typeof window === "undefined") {
+  if (typeof window === "undefined" && project) {
     return <HelmetDatoCms seo={project.seoMetaTags} />;
   }
   const [openWindows, setOpenWindows] = useState(
