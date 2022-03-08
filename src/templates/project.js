@@ -354,6 +354,7 @@ export default ({ data }) => {
                             src={link.url}
                             frameBorder="0"
                             scrolling={link.enableScroll ? "yes" : "no"}
+                            allowFullScreen
                           ></iframe>
                         )}
                       </>
