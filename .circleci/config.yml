@@ -12,8 +12,7 @@ jobs:
       - run: node --version
       - checkout
       - run: yarn
-      - run: export DATO_API_TOKEN=$TDA_DATO_API_TOKEN
-      - run: yarn build
+      - run: export DATO_API_TOKEN=$TDA_DATO_API_TOKEN; yarn build
       - run: scp -r -P 7171 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ./public/* unfold@vs.li-ma.nl:tda/
       # - run:
       #     name: Notify DatoCMS about the status of the job
