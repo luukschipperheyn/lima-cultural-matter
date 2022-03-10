@@ -115,7 +115,7 @@ export default ({ data }) => {
                 color: project.menucolor.hex,
               }}
             >
-              <span>Welcome to UNFOLD: Nan Hoover!</span>
+              <span>Welcome to Transformation Digital Art!</span>
             </p>
 
             <div
@@ -195,7 +195,9 @@ export default ({ data }) => {
           className="bottom-menu--title"
           onClick={() => setShowAbout(!showAbout)}
         >
-          <span className="bottom-menu--title-text">Unfold</span>
+          <span className="bottom-menu--title-text">
+            Transformation Digital Art
+          </span>
           <span className="bottom-menu--icon">
             {showAbout && <FaChevronDown />}
             {!showAbout && <FaChevronUp />}
