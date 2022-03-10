@@ -7,6 +7,8 @@ import limaLogo from "../assets/LIMA_logo_staand_zwart.png";
 import "../style/project.css";
 import { HelmetDatoCms } from "gatsby-source-datocms";
 import dayjs from "dayjs";
+import bg from "../assets/bg.svg";
+import { url } from "vfile/node_modules/vfile-message";
 
 export default ({ data }) => {
   const project = data.datoCmsProject;
@@ -80,7 +82,9 @@ export default ({ data }) => {
       <div
         className="projectcontainer"
         style={{
-          background: project.backgroundcolor.hex,
+          // background: project.backgroundcolor.hex,
+          backgroundImage: `url(${bg})`,
+          backgroundSize: "cover",
         }}
       >
         <Draggable
@@ -173,7 +177,9 @@ export default ({ data }) => {
     <div
       className="projectcontainer"
       style={{
-        background: project.backgroundcolor.hex,
+        // background: project.backgroundcolor.hex,
+        backgroundImage: `url(${bg})`,
+        backgroundSize: "cover",
         color: project.textcolor.hex,
       }}
     >
