@@ -1,13 +1,13 @@
 import dayjs from "dayjs";
 import { graphql } from "gatsby";
 import Img from "gatsby-image";
-import { HelmetDatoCms } from "gatsby-source-datocms";
 import React, { useEffect, useState, useCallback } from "react";
 import Draggable from "react-draggable";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import bg from "../assets/bg.svg";
 import limaLogo from "../assets/LIMA_logo_staand_zwart.png";
 import { DoubleClickP } from "../components/double-click-p";
+import { Seo } from "../components/seo";
 import "../style/project.css";
 
 const isBrowser = typeof window !== "undefined"
@@ -54,7 +54,7 @@ const Project = ({ data }) => {
     setSelectedWindow(i);
   }, [zIndexes, setZIndexes, setSelectedWindow]);
   useEffect(() => {
-    const timeout = setTimeout(() => setGlobalClock(globalClock + 1));
+    const timeout = setTimeout(() => setGlobalClock(globalClock + 1), 1000);
     const now = dayjs();
     setCountdowns(c =>
       project.links.map((link, i) => {
@@ -85,6 +85,7 @@ const Project = ({ data }) => {
           backgroundSize: "cover",
         }}
       >
+        <Seo project={project} />
         <Draggable
           onStart={() => setDragging(true)}
           onStop={(e) => {
@@ -188,7 +189,7 @@ const Project = ({ data }) => {
         color: project.textcolor.hex,
       }}
     >
-      <HelmetDatoCms seo={project.seoMetaTags} />
+      <Seo project={project} />
       <div
         className="h1box2 bottom-menu"
         style={{
@@ -358,11 +359,12 @@ const Project = ({ data }) => {
                         }}
                       />
                     )}
-                    {!!link.url && (
+                    {(!!link.url && !!openWindows[i]) && (
                       <>
                         {link.url.toLowerCase().endsWith("pdf") ? (
                           <embed
                             src={link.url}
+                            style={dragging ? { pointerEvents: "none" } : {}}
                             type="application/pdf"
                             width="100%"
                             height="100%"
