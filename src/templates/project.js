@@ -2,11 +2,12 @@ import dayjs from "dayjs";
 import { graphql } from "gatsby";
 import Img from "gatsby-image";
 import { HelmetDatoCms } from "gatsby-source-datocms";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Draggable from "react-draggable";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import bg from "../assets/bg.svg";
 import limaLogo from "../assets/LIMA_logo_staand_zwart.png";
+import { DoubleClickP } from "../components/double-click-p";
 import "../style/project.css";
 
 const isBrowser = typeof window !== "undefined"
@@ -17,24 +18,6 @@ const Project = ({ data }) => {
     project.links.map((link) => link.open)
   );
   const [globalClock, setGlobalClock] = useState(0);
-  useEffect(() => {
-    const timeout = setTimeout(() => setGlobalClock(globalClock + 1));
-    const now = dayjs();
-    setCountdowns(c =>
-      project.links.map((link, i) => {
-        if (!link.startTime) {
-          return 0;
-        }
-        const then = dayjs(link.startTime);
-        const diff = then.diff(now, "second");
-        if (c[i] > 0 && diff === 0) {
-          selectWindow(i);
-        }
-        return Math.max(0, diff);
-      })
-    );
-    return () => clearTimeout(timeout);
-  }, [globalClock]);
   const [countdowns, setCountdowns] = useState(
     project.links.map((link) => dayjs(link.startTime).diff(dayjs(), "second"))
   );
@@ -58,8 +41,7 @@ const Project = ({ data }) => {
   const [selectedWindow, setSelectedWindow] = useState(null);
   const [dragging, setDragging] = useState(false);
   const [showAbout, setShowAbout] = useState(true);
-  const [showProjects, setShowProjects] = useState(false);
-  const selectWindow = (i) => {
+  const selectWindow = useCallback((i) => {
     const highestZIndex = zIndexes.reduce(
       (acc, val) => (val > acc ? val : acc),
       0
@@ -70,7 +52,25 @@ const Project = ({ data }) => {
       )
     );
     setSelectedWindow(i);
-  };
+  }, [zIndexes, setZIndexes, setSelectedWindow]);
+  useEffect(() => {
+    const timeout = setTimeout(() => setGlobalClock(globalClock + 1));
+    const now = dayjs();
+    setCountdowns(c =>
+      project.links.map((link, i) => {
+        if (!link.startTime) {
+          return 0;
+        }
+        const then = dayjs(link.startTime);
+        const diff = then.diff(now, "second");
+        if (c[i] > 0 && diff === 0) {
+          selectWindow(i);
+        }
+        return Math.max(0, diff);
+      })
+    );
+    return () => clearTimeout(timeout);
+  }, [globalClock, project.links, selectWindow]);
   const [accessGranted, setAccessGranted] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
   const [showPasswordError, setShowPasswordError] = useState(false);
@@ -92,7 +92,7 @@ const Project = ({ data }) => {
           }}
           handle=".window-title"
           defaultPosition={{ x: 200, y: 200 }}
-          bounds={{ top: 0 }}
+          bounds="parent"
         >
           <div
             className={`window open selected`}
@@ -157,6 +157,13 @@ const Project = ({ data }) => {
                     setShowPasswordError(passwordInput !== project.password);
                     setPasswordInput("");
                   }}
+                  role="button"
+                  tabIndex={0}
+                  onKeyPress={() => {
+                    setAccessGranted(passwordInput === project.password);
+                    setShowPasswordError(passwordInput !== project.password);
+                    setPasswordInput("");
+                  }}
                 >
                   Enter
                 </div>
@@ -192,6 +199,9 @@ const Project = ({ data }) => {
         <p
           className="bottom-menu--title"
           onClick={() => setShowAbout(!showAbout)}
+          role="button"
+          tabIndex={0}
+          onKeyPress={() => setShowAbout(!showAbout)}
         >
           <span className="bottom-menu--title-text">
             Transformation Digital Art
@@ -213,9 +223,9 @@ const Project = ({ data }) => {
         }}
       >
         <span className="helper"></span>{" "}
-        <a href="https://www.li-ma.nl/lima/" target="_blank">
+        <a href="https://www.li-ma.nl/lima/" target="_blank" rel="noreferrer">
           {" "}
-          <img className="limalink" src={limaLogo}></img>
+          <img className="limalink" src={limaLogo} alt="lima logo"></img>
         </a>
       </div>
 
@@ -229,7 +239,7 @@ const Project = ({ data }) => {
             }}
             handle=".window-title"
             defaultPosition={defaultPositions[i]}
-            bounds={{ top: 0 }}
+            bounds="parent"
             key={`project=${i}`}
           >
             <div
@@ -245,9 +255,12 @@ const Project = ({ data }) => {
                 visibility: link.hidden ? "hidden" : undefined,
               }}
             >
-              <p
+              <DoubleClickP
                 className="window-title"
                 onMouseDownCapture={() => {
+                  selectWindow(i);
+                }}
+                onTouchStartCapture={() => {
                   selectWindow(i);
                 }}
                 onDoubleClick={() =>
@@ -288,7 +301,7 @@ const Project = ({ data }) => {
                     }}
                   />
                 )}
-              </p>
+              </DoubleClickP>
 
               <div
                 className="box"
@@ -312,7 +325,7 @@ const Project = ({ data }) => {
                 {!!countdowns[i] && (
                   <>
                     {link.preStartImage && link.preStartImage.fluid && (
-                      <Img fluid={link.preStartImage.fluid} />
+                      <Img fluid={link.preStartImage.fluid} alt="counting down.."/>
                     )}
                     {link.preStartMessageNode && (
                       <div
@@ -356,6 +369,7 @@ const Project = ({ data }) => {
                           />
                         ) : (
                           <iframe
+                            title={link.itemtitle}
                             style={dragging ? { pointerEvents: "none" } : {}}
                             src={link.url}
                             frameBorder="0"
@@ -366,7 +380,7 @@ const Project = ({ data }) => {
                       </>
                     )}
                     {link.image && link.image.fluid && (
-                      <Img fluid={link.image.fluid} />
+                      <Img fluid={link.image.fluid} alt={link.itemtitle}/>
                     )}
                     {link.image && link.image.video && (
                       <video
