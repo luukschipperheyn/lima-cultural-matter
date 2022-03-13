@@ -380,6 +380,7 @@ const Project = ({ data }) => {
                             frameBorder="0"
                             scrolling={link.enableScroll ? "yes" : "no"}
                             allowFullScreen
+                            sandbox="allow-same-origin"
                           ></iframe>
                         )}
                       </>
