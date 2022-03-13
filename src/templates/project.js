@@ -31,14 +31,14 @@ const Project = ({ data }) => {
     }))
   );
   useEffect(() => {
-    project.links.map((link) => ({
+    setDefaultPositions(project.links.map((link) => ({
       x: link.xposition !== null
           ? Math.max(0, (link.xposition / 100) * window.innerWidth)
           : Math.max(0, Math.random() * (window.innerWidth - link.width)),
       y: link.yposition !== null
           ? Math.max(0, (link.yposition / 100) * window.innerHeight)
           : Math.max(0, Math.random() * (window.innerHeight - 600)),
-    }))
+    })))
   }, [])
   const [selectedWindow, setSelectedWindow] = useState(null);
   const [dragging, setDragging] = useState(false);
