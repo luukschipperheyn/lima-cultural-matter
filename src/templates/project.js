@@ -254,7 +254,7 @@ const Project = ({ data }) => {
                 zIndex: zIndexes[i],
                 boxShadow: link.shadowCss ? link.shadowCss : undefined,
                 color: link.textColor ? link.textColor.hex : undefined,
-                visibility: link.hidden ? "hidden" : undefined,
+                visibility: (link.hidden || typeof window === "undefined") ? "hidden" : undefined,
                 top: defaultPositions[i].y,
                 left: defaultPositions[i].x
               }}
