@@ -71,7 +71,7 @@ const Project = ({ data }) => {
     );
     return () => clearTimeout(timeout);
   }, [globalClock, project.links, selectWindow]);
-  const [accessGranted, setAccessGranted] = useState(false);
+  const [accessGranted, setAccessGranted] = useState(project.password === "");
   const [passwordInput, setPasswordInput] = useState("");
   const [showPasswordError, setShowPasswordError] = useState(false);
 
