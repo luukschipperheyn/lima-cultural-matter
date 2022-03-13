@@ -9,6 +9,8 @@ import bg from "../assets/bg.svg";
 import limaLogo from "../assets/LIMA_logo_staand_zwart.png";
 import "../style/project.css";
 
+const isBrowser = typeof window !== "undefined"
+
 const Project = ({ data }) => {
   const project = data.datoCmsProject;
   const [openWindows, setOpenWindows] = useState(
@@ -43,11 +45,11 @@ const Project = ({ data }) => {
   );
   const [defaultPositions] = useState(
     project.links.map((link) => ({
-      x:
+      x: !isBrowser ? 0 :
         link.xposition !== null
           ? Math.max(0, (link.xposition / 100) * window.innerWidth)
           : Math.max(0, Math.random() * (window.innerWidth - link.width)),
-      y:
+      y: !isBrowser ? 0 :
         link.yposition !== null
           ? Math.max(0, (link.yposition / 100) * window.innerHeight)
           : Math.max(0, Math.random() * (window.innerHeight - 600)),
@@ -73,9 +75,6 @@ const Project = ({ data }) => {
   const [passwordInput, setPasswordInput] = useState("");
   const [showPasswordError, setShowPasswordError] = useState(false);
 
-  if (typeof window === "undefined" && project) {
-    return <HelmetDatoCms seo={project.seoMetaTags} />;
-  }
   if (!accessGranted) {
     return (
       <div
