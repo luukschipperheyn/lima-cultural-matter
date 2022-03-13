@@ -1,20 +1,16 @@
-import { graphql, Link } from "gatsby";
+import dayjs from "dayjs";
+import { graphql } from "gatsby";
 import Img from "gatsby-image";
+import { HelmetDatoCms } from "gatsby-source-datocms";
 import React, { useEffect, useState } from "react";
 import Draggable from "react-draggable";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import bg from "../assets/bg.svg";
 import limaLogo from "../assets/LIMA_logo_staand_zwart.png";
 import "../style/project.css";
-import { HelmetDatoCms } from "gatsby-source-datocms";
-import dayjs from "dayjs";
-import bg from "../assets/bg.svg";
-import { url } from "vfile/node_modules/vfile-message";
 
-export default ({ data }) => {
+const Project = ({ data }) => {
   const project = data.datoCmsProject;
-  if (typeof window === "undefined" && project) {
-    return <HelmetDatoCms seo={project.seoMetaTags} />;
-  }
   const [openWindows, setOpenWindows] = useState(
     project.links.map((link) => link.open)
   );
@@ -22,14 +18,14 @@ export default ({ data }) => {
   useEffect(() => {
     const timeout = setTimeout(() => setGlobalClock(globalClock + 1));
     const now = dayjs();
-    setCountdowns(
+    setCountdowns(c =>
       project.links.map((link, i) => {
         if (!link.startTime) {
           return 0;
         }
         const then = dayjs(link.startTime);
         const diff = then.diff(now, "second");
-        if (countdowns[i] > 0 && diff === 0) {
+        if (c[i] > 0 && diff === 0) {
           selectWindow(i);
         }
         return Math.max(0, diff);
@@ -77,6 +73,9 @@ export default ({ data }) => {
   const [passwordInput, setPasswordInput] = useState("");
   const [showPasswordError, setShowPasswordError] = useState(false);
 
+  if (typeof window === "undefined" && project) {
+    return <HelmetDatoCms seo={project.seoMetaTags} />;
+  }
   if (!accessGranted) {
     return (
       <div
@@ -511,3 +510,5 @@ function GetPaddedIntString(n, numDigits) {
 
   return nPadded;
 }
+
+export default Project
