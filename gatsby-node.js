@@ -2,57 +2,47 @@ const path = require(`path`);
 const { createFilePath } = require(`gatsby-source-filesystem`);
 const webpack = require(`webpack`);
 
-exports.createPages = ({ graphql, actions }) => {
+exports.createPages = async ({ graphql, actions }) => {
   const { createPage, createRedirect } = actions;
-
-  return new Promise((resolve, reject) =>
-    graphql(`
-      {
-        datoCmsSiteConfig {
-          defaultProject {
+  const result = await graphql(`
+    {
+      datoCmsSiteConfig {
+        defaultProject {
+          slug
+        }
+      }
+      allDatoCmsProject {
+        edges {
+          node {
             slug
           }
         }
-        allDatoCmsProject {
-          edges {
-            node {
-              slug
-            }
-          }
-        }
       }
-    `)
-      .then((result) => {
-        Promise.all(
-          result.data.allDatoCmsProject.edges.map(async ({ node: project }) => {
-            await createPage({
-              path: `projects/${project.slug}`,
-              component: path.resolve(`./src/templates/project.js`),
-              context: {
-                slug: project.slug,
-              },
-            });
-            await createPage({
-              path: `/${project.slug}`,
-              component: path.resolve(`./src/templates/project.js`),
-              context: {
-                slug: project.slug,
-              },
-            });
-          })
-        );
-      })
-      .then(() =>
-        createPage({
-          path: `/`,
-          component: path.resolve(`./src/templates/project.js`),
-          context: {
-            slug: "index",
-          },
-        })
-      )
-      .then(resolve)
-  );
+    }
+  `)
+  for ({node: project} of result.data.allDatoCmsProject.edges) {
+    await createPage({
+      path: `projects/${project.slug}`,
+      component: path.resolve(`./src/templates/project.js`),
+      context: {
+        slug: project.slug,
+      },
+    });
+    await createPage({
+      path: `/${project.slug}`,
+      component: path.resolve(`./src/templates/project.js`),
+      context: {
+        slug: project.slug,
+      },
+    });
+  }
+  await createPage({
+    path: `/`,
+    component: path.resolve(`./src/templates/project.js`),
+    context: {
+      slug: "index",
+    },
+  })
 };
 
 //gatsby-node.js
