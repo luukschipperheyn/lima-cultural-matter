@@ -3,7 +3,7 @@ const { createFilePath } = require(`gatsby-source-filesystem`);
 const webpack = require(`webpack`);
 
 exports.createPages = ({ graphql, actions }) => {
-  const { createPage } = actions;
+  const { createPage, createRedirect } = actions;
 
   return new Promise((resolve, reject) =>
     graphql(`
@@ -24,9 +24,16 @@ exports.createPages = ({ graphql, actions }) => {
     `)
       .then((result) => {
         Promise.all(
-          result.data.allDatoCmsProject.edges.map(({ node: project }) => {
-            createPage({
+          result.data.allDatoCmsProject.edges.map(async ({ node: project }) => {
+            await createPage({
               path: `projects/${project.slug}`,
+              component: path.resolve(`./src/templates/project.js`),
+              context: {
+                slug: project.slug,
+              },
+            });
+            await createPage({
+              path: `/${project.slug}`,
               component: path.resolve(`./src/templates/project.js`),
               context: {
                 slug: project.slug,
