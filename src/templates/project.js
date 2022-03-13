@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { graphql } from "gatsby";
 import Img from "gatsby-image";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useLayoutEffect } from "react";
 import Draggable from "react-draggable";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import bg from "../assets/bg.svg";
@@ -9,8 +9,6 @@ import limaLogo from "../assets/LIMA_logo_staand_zwart.png";
 import { DoubleClickP } from "../components/double-click-p";
 import { Seo } from "../components/seo";
 import "../style/project.css";
-
-const isBrowser = typeof window !== "undefined"
 
 const Project = ({ data }) => {
   const project = data.datoCmsProject;
@@ -26,18 +24,22 @@ const Project = ({ data }) => {
       link.zIndex !== null ? link.zIndex : link.open ? 0 : 1
     )
   );
-  const [defaultPositions] = useState(
+  const [defaultPositions, setDefaultPositions] = useState(
+    project.links.map(() => ({
+      x:0,
+      y:0,
+    }))
+  );
+  useEffect(() => {
     project.links.map((link) => ({
-      x: !isBrowser ? 0 :
-        link.xposition !== null
+      x: link.xposition !== null
           ? Math.max(0, (link.xposition / 100) * window.innerWidth)
           : Math.max(0, Math.random() * (window.innerWidth - link.width)),
-      y: !isBrowser ? 0 :
-        link.yposition !== null
+      y: link.yposition !== null
           ? Math.max(0, (link.yposition / 100) * window.innerHeight)
           : Math.max(0, Math.random() * (window.innerHeight - 600)),
     }))
-  );
+  }, [])
   const [selectedWindow, setSelectedWindow] = useState(null);
   const [dragging, setDragging] = useState(false);
   const [showAbout, setShowAbout] = useState(true);
