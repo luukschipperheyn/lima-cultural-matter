@@ -32,7 +32,7 @@ exports.createPages = async ({ graphql, actions }) => {
       path: `/${project.slug}`,
       component: path.resolve(`./src/templates/project.js`),
       context: {
-        slug: result.data.datoCmsSiteConfig.defaultProject.slug,
+        slug: project.slug,
       },
     });
   }
@@ -40,7 +40,7 @@ exports.createPages = async ({ graphql, actions }) => {
     path: `/`,
     component: path.resolve(`./src/templates/project.js`),
     context: {
-      slug: "index",
+      slug: result.data.datoCmsSiteConfig.defaultProject.slug,
     },
   })
 };

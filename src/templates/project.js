@@ -34,10 +34,10 @@ const Project = ({ data }) => {
     setDefaultPositions(project.links.map((link) => ({
       x: link.xposition !== null
           ? Math.max(0, (link.xposition / 100) * window.innerWidth)
-          : Math.max(0, Math.random() * (window.innerWidth - link.width)),
+          : Math.max(0, Math.random() * (window.innerWidth - (link.width ? link.width : 400))),
       y: link.yposition !== null
           ? Math.max(0, (link.yposition / 100) * window.innerHeight)
-          : Math.max(0, Math.random() * (window.innerHeight - 600)),
+          : Math.max(0, Math.random() * (window.innerHeight - (link.height ? link.height : 200))),
     })))
   }, [])
   const [selectedWindow, setSelectedWindow] = useState(null);
@@ -241,7 +241,6 @@ const Project = ({ data }) => {
               setDragging(false);
             }}
             handle=".window-title"
-            defaultPosition={defaultPositions[i]}
             bounds="parent"
             key={`project=${i}`}
           >
@@ -256,6 +255,8 @@ const Project = ({ data }) => {
                 boxShadow: link.shadowCss ? link.shadowCss : undefined,
                 color: link.textColor ? link.textColor.hex : undefined,
                 visibility: link.hidden ? "hidden" : undefined,
+                top: defaultPositions[i].y,
+                left: defaultPositions[i].x
               }}
             >
               <DoubleClickP
