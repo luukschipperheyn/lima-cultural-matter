@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { graphql } from "gatsby";
 import Img from "gatsby-image";
-import React, { useEffect, useState, useCallback, useLayoutEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Draggable from "react-draggable";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import bg from "../assets/bg.svg";
@@ -24,41 +24,60 @@ const Project = ({ data }) => {
       link.zIndex !== null ? link.zIndex : link.open ? 0 : 1
     )
   );
+  const [isBrowser, setIsBrowser] = useState(typeof window !== "undefined");
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
   const [defaultPositions, setDefaultPositions] = useState(
     project.links.map(() => ({
-      x:0,
-      y:0,
+      x: 0,
+      y: 0,
     }))
   );
   useEffect(() => {
-    setDefaultPositions(project.links.map((link) => ({
-      x: link.xposition !== null
-          ? Math.max(0, (link.xposition / 100) * window.innerWidth)
-          : Math.max(0, Math.random() * (window.innerWidth - (link.width ? link.width : 400))),
-      y: link.yposition !== null
-          ? Math.max(0, (link.yposition / 100) * window.innerHeight)
-          : Math.max(0, Math.random() * (window.innerHeight - (link.height ? link.height : 200))),
-    })))
-  }, [])
+    setDefaultPositions(
+      project.links.map((link) => ({
+        x:
+          link.xposition !== null
+            ? Math.max(0, (link.xposition / 100) * window.innerWidth)
+            : Math.max(
+                0,
+                Math.random() *
+                  (window.innerWidth - (link.width ? link.width : 400))
+              ),
+        y:
+          link.yposition !== null
+            ? Math.max(0, (link.yposition / 100) * window.innerHeight)
+            : Math.max(
+                0,
+                Math.random() *
+                  (window.innerHeight - (link.height ? link.height : 200))
+              ),
+      }))
+    );
+  }, []);
   const [selectedWindow, setSelectedWindow] = useState(null);
   const [dragging, setDragging] = useState(false);
   const [showAbout, setShowAbout] = useState(true);
-  const selectWindow = useCallback((i) => {
-    const highestZIndex = zIndexes.reduce(
-      (acc, val) => (val > acc ? val : acc),
-      0
-    );
-    setZIndexes(
-      zIndexes.map((zIndex, zIndexIndex) =>
-        zIndexIndex === i ? highestZIndex + 1 : zIndex
-      )
-    );
-    setSelectedWindow(i);
-  }, [zIndexes, setZIndexes, setSelectedWindow]);
+  const selectWindow = useCallback(
+    (i) => {
+      const highestZIndex = zIndexes.reduce(
+        (acc, val) => (val > acc ? val : acc),
+        0
+      );
+      setZIndexes(
+        zIndexes.map((zIndex, zIndexIndex) =>
+          zIndexIndex === i ? highestZIndex + 1 : zIndex
+        )
+      );
+      setSelectedWindow(i);
+    },
+    [zIndexes, setZIndexes, setSelectedWindow]
+  );
   useEffect(() => {
     const timeout = setTimeout(() => setGlobalClock(globalClock + 1), 1000);
     const now = dayjs();
-    setCountdowns(c =>
+    setCountdowns((c) =>
       project.links.map((link, i) => {
         if (!link.startTime) {
           return 0;
@@ -254,9 +273,9 @@ const Project = ({ data }) => {
                 zIndex: zIndexes[i],
                 boxShadow: link.shadowCss ? link.shadowCss : undefined,
                 color: link.textColor ? link.textColor.hex : undefined,
-                visibility: (link.hidden || typeof window === "undefined") ? "hidden" : undefined,
+                visibility: link.hidden || !isBrowser ? "hidden" : undefined,
                 top: defaultPositions[i].y,
-                left: defaultPositions[i].x
+                left: defaultPositions[i].x,
               }}
             >
               <DoubleClickP
@@ -329,7 +348,10 @@ const Project = ({ data }) => {
                 {!!countdowns[i] && (
                   <>
                     {link.preStartImage && link.preStartImage.fluid && (
-                      <Img fluid={link.preStartImage.fluid} alt="counting down.."/>
+                      <Img
+                        fluid={link.preStartImage.fluid}
+                        alt="counting down.."
+                      />
                     )}
                     {link.preStartMessageNode && (
                       <div
@@ -362,7 +384,7 @@ const Project = ({ data }) => {
                         }}
                       />
                     )}
-                    {(!!link.url && !!openWindows[i]) && (
+                    {!!link.url && !!openWindows[i] && (
                       <>
                         {link.url.toLowerCase().endsWith("pdf") ? (
                           <embed
@@ -386,7 +408,7 @@ const Project = ({ data }) => {
                       </>
                     )}
                     {link.image && link.image.fluid && (
-                      <Img fluid={link.image.fluid} alt={link.itemtitle}/>
+                      <Img fluid={link.image.fluid} alt={link.itemtitle} />
                     )}
                     {link.image && link.image.video && (
                       <video
@@ -530,4 +552,4 @@ function GetPaddedIntString(n, numDigits) {
   return nPadded;
 }
 
-export default Project
+export default Project;
