@@ -17,11 +17,11 @@ jobs:
       - run: scp -r -P 7171 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ./public/* unfold@vs.li-ma.nl:tda/
       - run:
           name: Notify DatoCMS about the status of the job
-          command: 'curl -X POST --data-binary "{\"payload\": { \"branch\": \"$CIRCLE_BRANCH\", \"status\": \"failed\" } }" https://webhooks.datocms.com/b430ae8ebb/deploy-results'
+          command: 'curl -k -X POST --data-binary "{\"payload\": { \"branch\": \"$CIRCLE_BRANCH\", \"status\": \"failed\" } }" https://webhooks.datocms.com/b430ae8ebb/deploy-results'
           when: on_fail
       - run:
           name: Notify DatoCMS about the status of the job
-          command: 'curl -X POST --data-binary "{\"payload\": { \"branch\": \"$CIRCLE_BRANCH\", \"status\": \"success\" } }" https://webhooks.datocms.com/b430ae8ebb/deploy-results'
+          command: 'curl -k -X POST --data-binary "{\"payload\": { \"branch\": \"$CIRCLE_BRANCH\", \"status\": \"success\" } }" https://webhooks.datocms.com/b430ae8ebb/deploy-results'
           when: on_success
     
 workflows:
