@@ -24,10 +24,11 @@ const Project = ({ data }) => {
       link.zIndex !== null ? link.zIndex : link.open ? 0 : 1
     )
   );
-  const [isBrowser, setIsBrowser] = useState(typeof window !== "undefined");
+  const [isBrowser, setIsBrowser] = useState(false);
   useEffect(() => {
     setIsBrowser(true);
   }, []);
+
   const [defaultPositions, setDefaultPositions] = useState(
     project.links.map(() => ({
       x: 0,
@@ -160,6 +161,13 @@ const Project = ({ data }) => {
                   style={{ height: 30 }}
                   type="password"
                   onChange={(e) => setPasswordInput(e.target.value)}
+                  onKeyDownCapture={(e) => {
+                    if (e.key === "Enter") {
+                      setAccessGranted(passwordInput === project.password);
+                      setShowPasswordError(passwordInput !== project.password);
+                      setPasswordInput("");
+                    }
+                  }}
                   value={passwordInput}
                 />
                 <div
@@ -251,7 +259,6 @@ const Project = ({ data }) => {
         </a>
       </div>
 
-      {/* links loopen */}
       {project.links.map((link, i) => {
         return (
           <Draggable
